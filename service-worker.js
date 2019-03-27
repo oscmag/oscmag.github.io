@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/oscmag.github.io/precache-manifest.e99a33694c1172fa2094b0a9bc4650f8.js"
+  "/oscmag.github.io/precache-manifest.4d14fe9af35814519f5b03a5be4e5027.js"
 );
 
 workbox.clientsClaim();
