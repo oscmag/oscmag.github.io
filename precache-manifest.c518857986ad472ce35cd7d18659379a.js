@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/oscmag.github.io/static/css/main.14369410.chunk.css"
   },
   {
-    "revision": "c4280046aaddff88097291ff4dec11c2",
+    "revision": "c52b4f04d7c7367a0c0d7d09ba1c840e",
     "url": "/oscmag.github.io/index.html"
   }
 ];
