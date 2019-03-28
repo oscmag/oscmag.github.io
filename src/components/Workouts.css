@@ -1,0 +1,22 @@
+.add-button {
+  background-color: #407899;
+  width: 30px;
+  height: 30px;
+  margin: 20px;
+  border-radius: 100%;
+}
+
+#add-icon {
+  width: 30px;
+}
+
+.workout-wrapper {
+  background-color: #407899;
+  height: 100px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+@media (max-width: 615px) {
+
+}
