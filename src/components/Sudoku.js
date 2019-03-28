@@ -26,13 +26,13 @@ class Sudoku extends Component {
     this.setState({grid, selectedValue: undefined, processingTime: 0});
   }
 
-  fillGrid = async () => {
+  fillGrid = async (animate = true) => {
     const grid = [];
     for (let i = 0; i < 9; i++) {
       grid.push(['','','','','','','','','']);
     }
     let start = Date.now();
-    await this.fillNextCell(grid);
+    await this.fillNextCell(grid, 0, 0, [1,2,3,4,5,6,7,8,9], animate);
     let finish = Date.now();
     let processingTime = (finish - start) / 1000;
     this.setState({processingTime})
@@ -40,7 +40,7 @@ class Sudoku extends Component {
     this.setState({counter: 0});
   }
 
-  fillNextCell = async (grid, i = 0, j = 0, availableNums = [1,2,3,4,5,6,7,8,9]) => {
+  fillNextCell = async (grid, i = 0, j = 0, availableNums = [1,2,3,4,5,6,7,8,9], animate) => {
     this.setState({counter: this.state.counter+1})
     let pp = JSON.parse(JSON.stringify(grid));
     if (typeof pp[i][j] === 'number') {
@@ -56,9 +56,14 @@ class Sudoku extends Component {
     }
     grid[i][j] = availableNum;
     pp = JSON.parse(JSON.stringify(grid));
-    await setTimeout(() => {
+    if (animate) {
+      await setTimeout(() => {
+        this.setState({grid: pp});
+      }, 100 * this.state.counter);
+    } else {
       this.setState({grid: pp});
-    }, 100 * this.state.counter);
+    }
+
     let nJ = j + 1;
     let nI = i;
     if (nJ > 8) {
@@ -68,11 +73,11 @@ class Sudoku extends Component {
       nI++;
       nJ = 0;
     }
-    const filledCell = await this.fillNextCell(pp, nI, nJ);
+    const filledCell = await this.fillNextCell(pp, nI, nJ, [1,2,3,4,5,6,7,8,9], animate);
     if (filledCell === 'none') {
       return 'redo';
     } else if (filledCell === 'redo') {
-      return await this.fillNextCell(pp, i, j, availableNums);
+      return await this.fillNextCell(pp, i, j, availableNums, animate);
     }
   }
 
@@ -98,11 +103,14 @@ class Sudoku extends Component {
     }
   }
 
-  removeNumbers = (num = 10) => {
+  createPuzzle = async () => {
+    await this.fillGrid(false);
+    this.removeNumbers();
+  }
+
+  removeNumbers = (num = 25) => {
     const grid = Array.from(this.state.grid);
     const positions = [];
-    console.log('beforeeee', positions.length < num);
-    console.log('possss', positions.length, num);
 
     while (positions.length < num) {
       let randomRow = Math.floor(Math.random()*9);
@@ -110,14 +118,11 @@ class Sudoku extends Component {
       const found = positions.find(pos => {
         return pos.x === randomRow && pos.y === randomColumn;
       })
-      console.log('heeej');
       if (!found) {
         positions.push({x: randomRow, y: randomColumn});
       }
     }
-    console.log('grid: ', grid);
     for (let el of positions) {
-      console.log('xy', el.x, el.y)
       grid[el.x][el.y] = undefined;
     }
     this.setState({grid});
@@ -151,6 +156,7 @@ class Sudoku extends Component {
     return (
       <div className='wrapper'>
         <div className='sudoku-menu'>
+          <div className='s-button' onClick={this.createPuzzle}>Create Sudoku</div>
           <div className='s-button' onClick={this.fillGrid}>Fill Grid</div>
           <div className='s-button' onClick={this.createGrid}>Empty Grid</div>
           <div className='s-button' onClick={() => this.removeNumbers()}>Remove numbers</div>
