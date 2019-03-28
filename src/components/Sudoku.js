@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Sudoku.css';
 
+import helpers from '../helpers/sudoku-helpers';
+
 class Sudoku extends Component {
 
   constructor(props) {
@@ -8,7 +10,7 @@ class Sudoku extends Component {
     this.state = {
       grid: [],
       counter: 0,
-      duration: 0,
+      availableNumbers: [1,2,3,4,5,6,7,8,9],
     }
   }
 
@@ -21,23 +23,20 @@ class Sudoku extends Component {
     for (let i = 0; i < 9; i++) {
       grid.push(['','','','','','','','','']);
     }
-    this.setState({grid});
+    this.setState({grid, selectedValue: undefined, processingTime: 0});
   }
 
   fillGrid = async () => {
-    let timer = setInterval(() => {
-      this.setState({duration: this.state.duration + 1})
-    }, 1000)
     const grid = [];
     for (let i = 0; i < 9; i++) {
-      grid.push(['','','','','','','','','',]);
+      grid.push(['','','','','','','','','']);
     }
     let start = Date.now();
     await this.fillNextCell(grid);
-    clearInterval(timer);
     let finish = Date.now();
     let processingTime = (finish - start) / 1000;
-    console.log('processing time:', (processingTime + 's'));
+    this.setState({processingTime})
+    // console.log('processing time:', (processingTime + 's'));
     this.setState({counter: 0});
   }
 
@@ -86,7 +85,7 @@ class Sudoku extends Component {
     };
 
 
-    const isAvailable = await this.checkRow(grid, i, j, rNum) && await this.checkColumn(grid, i, j, rNum) && await this.checkBox(grid, i, j, rNum);
+    const isAvailable = await helpers.isAvailable(grid, i, j, rNum);
 
     console.log(i, j, isAvailable, rNum)
     if (isAvailable) {
@@ -100,106 +99,56 @@ class Sudoku extends Component {
     }
   }
 
-  checkRow = (grid, i, j, rNum) => {
-    for (let j2 = 0; j2 < 9; j2++) {
-      if (grid[i][j2] === rNum) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  checkColumn = (grid, i, j, rNum) => {
-    for (let i2 = 0; i2 < 9; i2++) {
-      if (grid[i2][j] === rNum) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  checkBox = async (grid, i, j, rNum) => {
-    // console.log('start');
-    for (let a = 3; a < 10; a = a + 3) {
-      if (i < a) {
-        for (let b = 3; b < 10; b = b + 3) {
-          let found = await this.innerFunc(grid, i, j, rNum, a, b);
-          switch(found) {
-            case 'true':
-              return true;
-            case 'false':
-              return false;
-            default:
-              continue;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  innerFunc = (grid, i, j, rNum, aMax, bMax) => {
-    if (j < bMax) {
-      for (let i2 = aMax-3; i2 < aMax; i2++) {
-        for (let j2 = bMax-3; j2 < bMax; j2++) {
-          if (grid[i2][j2] === rNum) {
-            return 'false';
-          }
-        }
-      }
-      return 'true';
-    }
-  }
-
-  checkSquare = (i, j) => {
-    let square = '';
-    if (i < 3 ) {
-      square += 'T';
-      if (j < 3) {
-        square += 'L';
-      } else if (j < 6) {
-        square += 'M';
+  handleClick = async (value, i, j) => {
+    const {numberGrabbed, grid, selectedValue} = this.state;
+    if ((value === undefined || value === '') && numberGrabbed !== undefined) {
+      const isAvailable = await helpers.isAvailable(grid, i, j, numberGrabbed);
+      if (isAvailable) {
+        let newGrid = grid.slice();
+        newGrid[i][j] = numberGrabbed;
+        this.setState({grid: newGrid, numberGrabbed: undefined});
       } else {
-        square += 'R';
-      }
-    } else if (i < 6) {
-      square += 'M';
-      if (j < 3) {
-        square += 'L';
-      } else if (j < 6) {
-        square += 'M';
-      } else {
-        square += 'R';
+        this.setState({invalidNumber: numberGrabbed, numberGrabbed: undefined});
       }
     } else {
-      square += 'B';
-      if (j < 3) {
-        square += 'L';
-      } else if (j < 6) {
-        square += 'M';
-      } else {
-        square += 'R';
-      }
+      const isNotSame = selectedValue !== value;
+      this.setState({selectedValue: isNotSame ? value : undefined, invalidNumber: undefined});
     }
+  }
 
-    return square;
+  handleNumPick = (number) => {
+    const isNotSame = number !== this.state.numberGrabbed;
+    this.setState({numberGrabbed: isNotSame ? number : undefined, invalidNumber: undefined});
   }
 
   render() {
-    const {grid, duration} = this.state;
+    const {grid, selectedValue, availableNumbers, numberGrabbed, invalidNumber, processingTime} = this.state;
 
     return (
       <div className='wrapper'>
         <div className='sudoku-menu'>
           <div className='s-button' onClick={this.fillGrid}>Fill Grid</div>
           <div className='s-button' onClick={this.createGrid}>Empty Grid</div>
-          {/* <div className='s-button'>{`duration: ${duration}s`}</div> */}
+          <div className='s-button'>{`Time: ${processingTime + 's'}`}</div>
         </div>
         <div className='grid'>
           {grid && grid.map((row, i) => {
             return row.map((cell, j) => {
-              return <div className='cell' key={j}>{cell}</div>
+              return (
+                <div
+                  className={`cell ${grid[i][j] === selectedValue ? ' selected-value' : ''} ${invalidNumber !== undefined ? 'invalid-number' : ''}`}
+                  onClick={() => this.handleClick(grid[i][j], i, j)}
+                  key={j}
+                >
+                  {cell}
+                </div>
+              )
             })
+          })}
+        </div>
+        <div className='available-numbers'>
+          {availableNumbers.map(number => {
+            return <div className={`cell ${numberGrabbed === number ? 'grabbed-number' : ''}`} onClick={() => this.handleNumPick(number)} key={number}>{number}</div>
           })}
         </div>
       </div>
