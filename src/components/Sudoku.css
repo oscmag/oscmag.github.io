@@ -3,8 +3,7 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  /* width: 35px;
-  height: 35px; */
+  font-size: calc(16px + (24 - 18)*(100vw - 600px)/(1200 - 600));
   background-color: tomato;
 }
 
@@ -37,8 +36,10 @@
 .grid {
   display: grid;
   margin: 10px;
-  width: 350px;
-  height: 350px;
+  height: 93vw;
+  width:92vw;
+  max-width: 350px;
+  max-height: 350px;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
   grid-gap: 1px;
