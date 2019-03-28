@@ -84,7 +84,6 @@ class Sudoku extends Component {
       return rNum;
     };
 
-
     const isAvailable = await helpers.isAvailable(grid, i, j, rNum);
 
     console.log(i, j, isAvailable, rNum)
@@ -97,6 +96,31 @@ class Sudoku extends Component {
       }
       return await this.getAvailableNum(grid, i, j, availableNums);
     }
+  }
+
+  removeNumbers = (num = 10) => {
+    const grid = Array.from(this.state.grid);
+    const positions = [];
+    console.log('beforeeee', positions.length < num);
+    console.log('possss', positions.length, num);
+
+    while (positions.length < num) {
+      let randomRow = Math.floor(Math.random()*9);
+      let randomColumn = Math.floor(Math.random()*9);
+      const found = positions.find(pos => {
+        return pos.x === randomRow && pos.y === randomColumn;
+      })
+      console.log('heeej');
+      if (!found) {
+        positions.push({x: randomRow, y: randomColumn});
+      }
+    }
+    console.log('grid: ', grid);
+    for (let el of positions) {
+      console.log('xy', el.x, el.y)
+      grid[el.x][el.y] = undefined;
+    }
+    this.setState({grid});
   }
 
   handleClick = async (value, i, j) => {
@@ -129,6 +153,7 @@ class Sudoku extends Component {
         <div className='sudoku-menu'>
           <div className='s-button' onClick={this.fillGrid}>Fill Grid</div>
           <div className='s-button' onClick={this.createGrid}>Empty Grid</div>
+          <div className='s-button' onClick={() => this.removeNumbers()}>Remove numbers</div>
           <div className='s-button'>{`Time: ${processingTime + 's'}`}</div>
         </div>
         <div className='grid'>
@@ -136,7 +161,7 @@ class Sudoku extends Component {
             return row.map((cell, j) => {
               return (
                 <div
-                  className={`cell ${grid[i][j] === selectedValue ? ' selected-value' : ''} ${invalidNumber !== undefined ? 'invalid-number' : ''}`}
+                  className={`cell ${grid[i][j] === selectedValue ? ' selected-value' : ''} ${invalidNumber === grid[i][j] ? 'invalid-number' : ''}`}
                   onClick={() => this.handleClick(grid[i][j], i, j)}
                   key={j}
                 >

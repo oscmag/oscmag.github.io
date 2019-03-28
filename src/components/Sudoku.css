@@ -93,4 +93,5 @@
   cursor: pointer;
   border: rgb(83, 66, 66) solid 1px;
   border-radius: 5px;
+  user-select: none;
 }
