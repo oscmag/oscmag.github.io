@@ -1,14 +1,14 @@
 {
-  "main.css": "/oscmag.github.io/static/css/main.6628bf99.chunk.css",
-  "main.js": "/oscmag.github.io/static/js/main.8daaf792.chunk.js",
-  "main.js.map": "/oscmag.github.io/static/js/main.8daaf792.chunk.js.map",
-  "runtime~main.js": "/oscmag.github.io/static/js/runtime~main.7a51886a.js",
-  "runtime~main.js.map": "/oscmag.github.io/static/js/runtime~main.7a51886a.js.map",
-  "static/js/2.5b1ff830.chunk.js": "/oscmag.github.io/static/js/2.5b1ff830.chunk.js",
-  "static/js/2.5b1ff830.chunk.js.map": "/oscmag.github.io/static/js/2.5b1ff830.chunk.js.map",
-  "index.html": "/oscmag.github.io/index.html",
-  "precache-manifest.3c159a21d01f134353b6afb91a550887.js": "/oscmag.github.io/precache-manifest.3c159a21d01f134353b6afb91a550887.js",
-  "service-worker.js": "/oscmag.github.io/service-worker.js",
-  "static/css/main.6628bf99.chunk.css.map": "/oscmag.github.io/static/css/main.6628bf99.chunk.css.map",
-  "static/media/menu-icon.svg": "/oscmag.github.io/static/media/menu-icon.d87f95fd.svg"
+  "main.css": "/static/css/main.519ee663.chunk.css",
+  "main.js": "/static/js/main.759c3425.chunk.js",
+  "main.js.map": "/static/js/main.759c3425.chunk.js.map",
+  "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+  "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+  "static/js/2.f91155bc.chunk.js": "/static/js/2.f91155bc.chunk.js",
+  "static/js/2.f91155bc.chunk.js.map": "/static/js/2.f91155bc.chunk.js.map",
+  "index.html": "/index.html",
+  "precache-manifest.8c3b687dbd70a8eb8eb2eaf99d171223.js": "/precache-manifest.8c3b687dbd70a8eb8eb2eaf99d171223.js",
+  "service-worker.js": "/service-worker.js",
+  "static/css/main.519ee663.chunk.css.map": "/static/css/main.519ee663.chunk.css.map",
+  "static/media/menu-icon.svg": "/static/media/menu-icon.d87f95fd.svg"
 }
