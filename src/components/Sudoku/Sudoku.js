@@ -17,7 +17,7 @@ class Sudoku extends Component {
     }
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     this.createGrid();
   }
 
@@ -154,9 +154,37 @@ class Sudoku extends Component {
     this.setState({numberGrabbed: isNotSame ? number : undefined, invalidNumber: undefined});
   }
 
+  createBoxes = () => {
+    const {grid, selectedValue, invalidNumber} = this.state;
+
+    const boxes = [];
+    for (let a = 0; a < 9; a = a + 3) {
+      for (let b = 0; b < 9; b = b + 3) {
+        let box = [];
+        for (let i = a; i < a+3; i++) {
+          for (let j = b; j < b+3; j++) {
+            box.push(
+              <Square
+                grid={grid}
+                cell={grid[i][j]}
+                i={i}
+                j={j}
+                selectedValue={selectedValue}
+                invalidNumber={invalidNumber}
+                handleClick={this.handleClick}
+                key={i + '' + j}
+              />
+            );
+          }
+        }
+        boxes.push(box);
+      }
+    }
+    return boxes;
+  }
+
   render() {
     const {grid, selectedValue, availableNumbers, numberGrabbed, invalidNumber, processingTime} = this.state;
-
     return (
       <div className='wrapper'>
         <div className='sudoku-menu'>
@@ -167,22 +195,13 @@ class Sudoku extends Component {
           <div className='s-button'>{`Time: ${processingTime + 's'}`}</div>
         </div>
         <div className='grid'>
-          {grid && grid.map((row, i) => {
-            return row.map((cell, j) => {
-              return (
-                <Square
-                  grid={grid}
-                  cell={cell}
-                  i={i}
-                  j={j}
-                  selectedValue={selectedValue}
-                  invalidNumber={invalidNumber}
-                  handleClick={this.handleClick}
-                  key={i+j}
-                />
-              )
+          {
+            this.createBoxes().map((box, i) => {
+              return <div key={i} className='box'>
+                {box.map(cell => cell)}
+              </div>
             })
-          })}
+          }
         </div>
         <div className='available-numbers'>
           {availableNumbers.map(number => {

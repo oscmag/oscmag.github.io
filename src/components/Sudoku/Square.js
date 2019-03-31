@@ -5,7 +5,6 @@ import './Square.css';
 
 const squareTarget = {
   drop(props) {
-    console.log('props: ', props);
     props.handleClick(props.number, props.i, props.j);
   },
   canDrop(props) {
