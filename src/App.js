@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {MainProvider} from './context/MainContext';
 import {Router, Route} from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Sudoku from './components/Sudoku';
-import Workouts from './components/Workouts.js'
-import Statistics from './components/Statistics.js'
-import About from './components/About.js'
+import Sudoku from './components/Sudoku/Sudoku';
+// import Workouts from './components/Workouts.js'
+// import Statistics from './components/Statistics.js'
+// import About from './components/About.js'
 import './App.css';
 import history from './history';
 

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import withDragDropContext from './withDragDropContext';
 import './Sudoku.css';
 
-import helpers from '../helpers/sudoku-helpers';
+import Square from './Square';
+import Cell from './Cell';
+import helpers from '../../helpers/sudoku-helpers';
 
 class Sudoku extends Component {
 
@@ -129,6 +132,7 @@ class Sudoku extends Component {
   }
 
   handleClick = async (value, i, j) => {
+    console.log('11111', value, i, j)
     const {numberGrabbed, grid, selectedValue} = this.state;
     if ((value === undefined || value === '') && numberGrabbed !== undefined) {
       const isAvailable = await helpers.isAvailable(grid, i, j, numberGrabbed);
@@ -166,20 +170,23 @@ class Sudoku extends Component {
           {grid && grid.map((row, i) => {
             return row.map((cell, j) => {
               return (
-                <div
-                  className={`cell ${grid[i][j] === selectedValue ? ' selected-value' : ''} ${invalidNumber === grid[i][j] ? 'invalid-number' : ''}`}
-                  onClick={() => this.handleClick(grid[i][j], i, j)}
-                  key={j}
-                >
-                  {cell}
-                </div>
+                <Square
+                  grid={grid}
+                  cell={cell}
+                  i={i}
+                  j={j}
+                  selectedValue={selectedValue}
+                  invalidNumber={invalidNumber}
+                  handleClick={this.handleClick}
+                  key={i+j}
+                />
               )
             })
           })}
         </div>
         <div className='available-numbers'>
           {availableNumbers.map(number => {
-            return <div className={`cell ${numberGrabbed === number ? 'grabbed-number' : ''}`} onClick={() => this.handleNumPick(number)} key={number}>{number}</div>
+            return <Cell number={number} numberGrabbed={numberGrabbed} handleNumPick={this.handleNumPick} key={number}/>
           })}
         </div>
       </div>
@@ -187,4 +194,4 @@ class Sudoku extends Component {
   }
 }
 
-export default Sudoku;
+export default withDragDropContext(Sudoku);
