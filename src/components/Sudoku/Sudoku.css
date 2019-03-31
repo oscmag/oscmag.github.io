@@ -6,11 +6,17 @@
   font-size: calc(16px + (24 - 18)*(100vw - 600px)/(1200 - 600));
   background-color: tomato;
   cursor: pointer;
-  border: solid black 1px;
+  /* border: solid black 1px; */
+  border-radius: 2px;
+  font-family: 'Rubik', sans-serif;
 }
 
 .available-numbers > .cell {
   background-color: rgb(63, 214, 88);
+}
+
+.scribble-numbers > .cell {
+  background: transparent;
 }
 
 .row {
@@ -35,7 +41,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   grid-gap: 1px;
-  padding: 1px;
+  padding: 2px;
 }
 
 
@@ -56,6 +62,32 @@
   color: white;
 }
 
+.selected-square {
+  opacity: 0.7;
+}
+
+.bottom-area {
+  display: flex;
+}
+
+.scribble-button {
+  width: 30px;
+  height: 30px;
+  margin-left: -40px;
+  padding-right: 10px;
+}
+
+.scribble-numbers {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-gap: 1px;
+  width: 80vw;
+  max-width: 350px;
+  max-height: 39px;
+  height: calc(92vw/9);
+  /* border: solid white 2px; */
+}
+
 .available-numbers {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
@@ -64,7 +96,7 @@
   max-width: 350px;
   max-height: 39px;
   height: calc(92vw/9);
-  border: solid rgb(104, 51, 51) 2px;
+  /* border: solid rgb(104, 51, 51) 2px; */
 }
 
 .grabbed-number {

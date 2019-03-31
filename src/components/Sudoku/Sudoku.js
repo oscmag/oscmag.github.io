@@ -14,6 +14,8 @@ class Sudoku extends Component {
       grid: [],
       counter: 0,
       availableNumbers: [1,2,3,4,5,6,7,8,9],
+      selectedSquare: {},
+      scribble: false,
     }
   }
 
@@ -26,7 +28,7 @@ class Sudoku extends Component {
     for (let i = 0; i < 9; i++) {
       grid.push(['','','','','','','','','']);
     }
-    this.setState({grid, selectedValue: undefined, processingTime: 0});
+    this.setState({grid, scribbleGrid: Array.from(grid), selectedValue: undefined, processingTime: 0});
   }
 
   fillGrid = async (animate = true) => {
@@ -133,7 +135,10 @@ class Sudoku extends Component {
 
   handleClick = async (value, i, j) => {
     console.log('11111', value, i, j)
-    const {numberGrabbed, grid, selectedValue} = this.state;
+    const {numberGrabbed, grid, selectedValue, selectedSquare} = this.state;
+
+    this.setState({selectedSquare: (selectedSquare.row === i && selectedSquare.column === j) ? {} : {row: i, column: j}});
+
     if ((value === undefined || value === '') && numberGrabbed !== undefined) {
       const isAvailable = await helpers.isAvailable(grid, i, j, numberGrabbed);
       if (isAvailable) {
@@ -149,13 +154,38 @@ class Sudoku extends Component {
     }
   }
 
-  handleNumPick = (number) => {
-    const isNotSame = number !== this.state.numberGrabbed;
-    this.setState({numberGrabbed: isNotSame ? number : undefined, invalidNumber: undefined});
+  handleNumPick = async (number) => {
+    const {selectedSquare, grid} = this.state;
+    const {row, column} = selectedSquare;
+
+    if (row && typeof grid[row][column] !== 'number') {
+      const isAvailable = await helpers.isAvailable(grid, row, column, number);
+      if (isAvailable) {
+        let newGrid = grid.slice();
+        newGrid[row][column] = number;
+        this.setState({grid: newGrid, numberGrabbed: undefined});
+      } else {
+        this.setState({invalidNumber: number, numberGrabbed: undefined});
+      }
+    }
   }
 
+  toggleScribble = () => {
+    this.setState({scribble: !this.state.scribble});
+  }
+
+  // handleScribblePick = (number) => {
+  //   const {selectedSquare, grid, scribbleGrid} = this.state;
+  //   const {row, column} = selectedSquare;
+
+  //   if (typeof grid[row][column] !== 'number') {
+
+  //   }
+
+  // }
+
   createBoxes = () => {
-    const {grid, selectedValue, invalidNumber} = this.state;
+    const {grid, selectedValue, selectedSquare, invalidNumber} = this.state;
 
     const boxes = [];
     for (let a = 0; a < 9; a = a + 3) {
@@ -169,6 +199,7 @@ class Sudoku extends Component {
                 cell={grid[i][j]}
                 i={i}
                 j={j}
+                selectedSquare={selectedSquare}
                 selectedValue={selectedValue}
                 invalidNumber={invalidNumber}
                 handleClick={this.handleClick}
@@ -184,7 +215,8 @@ class Sudoku extends Component {
   }
 
   render() {
-    const {grid, selectedValue, availableNumbers, numberGrabbed, invalidNumber, processingTime} = this.state;
+    const {availableNumbers, numberGrabbed, processingTime, scribble} = this.state;
+
     return (
       <div className='wrapper'>
         <div className='sudoku-menu'>
@@ -203,10 +235,20 @@ class Sudoku extends Component {
             })
           }
         </div>
-        <div className='available-numbers'>
-          {availableNumbers.map(number => {
-            return <Cell number={number} numberGrabbed={numberGrabbed} handleNumPick={this.handleNumPick} key={number}/>
-          })}
+        <div className='bottom-area'>
+          <img className='scribble-button' onClick={this.toggleScribble} src={require('../../assets/pencil-icon.png')} alt=''/>
+          {!scribble
+          ? <div className='available-numbers'>
+            {availableNumbers.map(number => {
+              return <Cell number={number} numberGrabbed={numberGrabbed} handleNumPick={this.handleNumPick} key={number}/>
+            })}
+          </div>
+          : <div className='scribble-numbers'>
+            {availableNumbers.map(number => {
+              return <Cell number={number} numberGrabbed={numberGrabbed} handleNumPick={this.handleNumPick} key={number}/>
+            })}
+          </div>
+          }
         </div>
       </div>
     );

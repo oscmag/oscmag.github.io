@@ -28,10 +28,15 @@ function squareAvailable(grid, i, j) {
   }
 }
 
-function Square({grid, cell, selectedValue, invalidNumber, handleClick, i, j, connectDropTarget, isOver}) {
+function Square({grid, cell, selectedValue, selectedSquare, invalidNumber, handleClick, i, j, connectDropTarget, isOver}) {
   return connectDropTarget(
     <div
-      className={`cell ${grid[i][j] === selectedValue ? ' selected-value' : ''} ${invalidNumber === grid[i][j] ? 'invalid-number' : ''}`}
+      className={`
+        cell
+        ${grid[i][j] === selectedValue ? ' selected-value' : ''}
+        ${invalidNumber === grid[i][j] && invalidNumber !== undefined ? 'invalid-number' : ''}
+        ${selectedSquare.row === i && selectedSquare.column === j ? ' selected-square' : ''}
+      `}
       onClick={() => handleClick(grid[i][j], i, j)}
       key={j}
     >
