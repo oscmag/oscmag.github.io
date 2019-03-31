@@ -7,6 +7,9 @@ const squareTarget = {
   drop(props) {
     console.log('props: ', props);
     props.handleClick(props.number, props.i, props.j);
+  },
+  canDrop(props) {
+    return squareAvailable(props.grid, props.i, props.j);
   }
 }
 
@@ -14,6 +17,15 @@ function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
+  }
+}
+
+function squareAvailable(grid, i, j) {
+  if (typeof grid[i][j] === 'number') {
+    return false;
+  } else {
+    return true;
   }
 }
 

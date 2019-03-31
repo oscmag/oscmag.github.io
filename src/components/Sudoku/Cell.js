@@ -6,7 +6,7 @@ import './Cell.css';
 function Cell({connectDragSource, isDragging, number, numberGrabbed, handleNumPick}) {
   return connectDragSource(
     <div
-      className={`cell ${numberGrabbed === number ? 'grabbed-number' : ''}`}
+      className={`cell ${numberGrabbed === number ? 'grabbed-number' : ''} ${isDragging ? 'is-dragging' : ''}`}
       onClick={() => handleNumPick(number)}
       key={number}
     >
