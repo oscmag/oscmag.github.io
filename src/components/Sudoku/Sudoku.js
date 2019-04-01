@@ -214,6 +214,10 @@ class Sudoku extends Component {
     return boxes;
   }
 
+  setNumberGrabbed = (number) => {
+    this.setState({numberGrabbed: number});
+  }
+
   render() {
     const {availableNumbers, numberGrabbed, processingTime, scribble} = this.state;
 
@@ -240,7 +244,7 @@ class Sudoku extends Component {
           {!scribble
           ? <div className='available-numbers'>
             {availableNumbers.map(number => {
-              return <Cell number={number} numberGrabbed={numberGrabbed} handleNumPick={this.handleNumPick} key={number}/>
+              return <Cell number={number} numberGrabbed={numberGrabbed} setNumberGrabbed={this.setNumberGrabbed} handleNumPick={this.handleNumPick} key={number}/>
             })}
           </div>
           : <div className='scribble-numbers'>

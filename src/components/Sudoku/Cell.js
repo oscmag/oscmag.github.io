@@ -16,8 +16,8 @@ function Cell({connectDragSource, isDragging, number, numberGrabbed, handleNumPi
 }
 
 const cardSource = {
-  beginDrag: ({number, numberGrabbed, handleNumPick}) => {
-    handleNumPick(number);
+  beginDrag: ({number, numberGrabbed, setNumberGrabbed}) => {
+    setNumberGrabbed(number);
     return {number, numberGrabbed}
   }
 }
