@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import withDragDropContext from './withDragDropContext';
+import KeyboardEventHandler from 'react-keyboard-event-handler';
 import './Sudoku.css';
 
 import Square from './Square';
@@ -254,6 +255,9 @@ class Sudoku extends Component {
           </div>
           }
         </div>
+        <KeyboardEventHandler
+          handleKeys={['1', '2', '3', '4', '5', '6', '7', '8', '9']}
+          onKeyEvent={(key, e) => this.handleNumPick(key)} />
       </div>
     );
   }
