@@ -158,7 +158,7 @@ class Sudoku extends Component {
     const {selectedSquare, grid} = this.state;
     const {row, column} = selectedSquare;
 
-    if (row && typeof grid[row][column] !== 'number') {
+    if (typeof row === 'number' && typeof grid[row][column] !== 'number') {
       const isAvailable = await helpers.isAvailable(grid, row, column, number);
       if (isAvailable) {
         let newGrid = grid.slice();

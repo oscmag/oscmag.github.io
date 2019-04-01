@@ -13,6 +13,7 @@
 
 .available-numbers > .cell {
   background-color: rgb(63, 214, 88);
+  border-radius: 10px;
 }
 
 .scribble-numbers > .cell {
