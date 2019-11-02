@@ -1,15 +1,15 @@
 {
-  "main.css": "/static/css/main.2050a641.chunk.css",
-  "main.js": "/static/js/main.a84c34c4.chunk.js",
-  "main.js.map": "/static/js/main.a84c34c4.chunk.js.map",
+  "main.css": "/static/css/main.f38e3389.chunk.css",
+  "main.js": "/static/js/main.9f064166.chunk.js",
+  "main.js.map": "/static/js/main.9f064166.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
   "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
-  "static/js/2.ca2ac562.chunk.js": "/static/js/2.ca2ac562.chunk.js",
-  "static/js/2.ca2ac562.chunk.js.map": "/static/js/2.ca2ac562.chunk.js.map",
+  "static/js/2.5c34dd0f.chunk.js": "/static/js/2.5c34dd0f.chunk.js",
+  "static/js/2.5c34dd0f.chunk.js.map": "/static/js/2.5c34dd0f.chunk.js.map",
   "index.html": "/index.html",
-  "precache-manifest.c67ef84de63d916d09a528f2cd10ebd5.js": "/precache-manifest.c67ef84de63d916d09a528f2cd10ebd5.js",
+  "precache-manifest.0a5b88e5bae57195f7df57b235798d89.js": "/precache-manifest.0a5b88e5bae57195f7df57b235798d89.js",
   "service-worker.js": "/service-worker.js",
-  "static/css/main.2050a641.chunk.css.map": "/static/css/main.2050a641.chunk.css.map",
+  "static/css/main.f38e3389.chunk.css.map": "/static/css/main.f38e3389.chunk.css.map",
   "static/media/menu-icon.svg": "/static/media/menu-icon.d87f95fd.svg",
   "static/media/rubiks_cube_logo.png": "/static/media/rubiks_cube_logo.3e51c3ba.png"
 }
