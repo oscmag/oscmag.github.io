@@ -25,16 +25,13 @@
   text-decoration: none;
   user-select: none;
   cursor: pointer;
+  margin-right: 20px;
 }
 
 .navbar-links {
   display: flex;
   color: white;
   margin-left: 40px;
-}
-
-.navbar-links > a {
-  margin-right: 10px;
 }
 
 .navbar-links > a:hover {

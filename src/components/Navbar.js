@@ -37,6 +37,7 @@ class Navbar extends Component {
           {(!isMobile || menuOpen) &&
             <div className='navbar-links'>
               <Link to="/sudoku" onClick={this.toggleMenu}>Sudoku</Link>
+              <Link to="/rubiks" onClick={this.toggleMenu}>Rubiks Cube</Link>
               {/* <Link to="/workouts" onClick={this.toggleMenu}>WORKOUTS</Link>
               <Link to="/statistics" onClick={this.toggleMenu}>STATISTICS</Link>
               <Link to="/about" onClick={this.toggleMenu}>ABOUT</Link> */}
