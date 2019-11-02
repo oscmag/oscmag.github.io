@@ -94,7 +94,7 @@ class Rubiks extends React.Component {
   reset = () => {
     const {solutionCube} = this.state;
     this.setSides(solutionCube);
-    this.setState({cube: this.state.solutionCube, show: 'front'});
+    this.setState({cube: this.state.solutionCube, rotateX: 0, rotateY: 0});
   }
 
   getRotationMap = (options) => {

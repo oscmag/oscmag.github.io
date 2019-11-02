@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import withDragDropContext from './withDragDropContext';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
+import moment from 'moment';
 import './Sudoku.css';
 
 import Square from './Square';
@@ -37,10 +38,10 @@ class Sudoku extends Component {
     for (let i = 0; i < 9; i++) {
       grid.push(['','','','','','','','','']);
     }
-    let start = Date.now();
+    let start = moment();
     await this.fillNextCell(grid, 0, 0, [1,2,3,4,5,6,7,8,9], animate);
-    let finish = Date.now();
-    let processingTime = (finish - start) / 1000;
+    let end = moment();
+    let processingTime = (end - start) / 1000;
     this.setState({processingTime})
     // console.log('processing time:', (processingTime + 's'));
     this.setState({counter: 0});
@@ -110,8 +111,11 @@ class Sudoku extends Component {
   }
 
   createPuzzle = async () => {
+    const start = moment();
     await this.fillGrid(false);
     this.removeNumbers();
+    const end = moment();
+    console.log(`Created Sudoku in ${end-start}ms`);
   }
 
   removeNumbers = (num = 25) => {
@@ -135,7 +139,6 @@ class Sudoku extends Component {
   }
 
   handleClick = async (value, i, j) => {
-    console.log('11111', value, i, j)
     const {numberGrabbed, grid, selectedValue, selectedSquare} = this.state;
 
     this.setState({selectedSquare: (selectedSquare.row === i && selectedSquare.column === j) ? {} : {row: i, column: j}});
