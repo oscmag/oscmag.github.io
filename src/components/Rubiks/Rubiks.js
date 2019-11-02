@@ -8,7 +8,7 @@ class Rubiks extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {rotateX: 0, rotateY: 0};
   }
 
   componentDidMount = () => {
@@ -76,14 +76,19 @@ class Rubiks extends React.Component {
     this.setState({sides});
   }
 
-  changeSide = side => {
-    this.setState({show: side});
-  }
+  // changeSide = side => {
+  //   this.setState({show: side});
+  // }
 
   shuffle = () => {
+    let cube = JSON.parse(JSON.stringify(this.state.cube));
     const alts = ['d', 'f', 'b', 'l', 'r', 'u'];
-    const r = Math.floor(Math.random() * 6);
-    this.rotate(alts[r]);
+    for (let i = 0; i < 30; i++) {
+      const r = Math.floor(Math.random() * 6);
+      cube = this.rotate(alts[r], cube);
+    }
+    this.setSides(cube);
+    this.setState({cube});
   }
 
   reset = () => {
@@ -121,9 +126,9 @@ class Rubiks extends React.Component {
     return arr;
   }
 
-  rotate = (notation) => {
+  rotate = (notation, currentCube) => {
     const {cube, sides} = this.state;
-    let updatedCube = JSON.parse(JSON.stringify(cube));
+    let updatedCube = JSON.parse(JSON.stringify(currentCube || cube));
 
     const notationsMap = {
       f: 'front',   // rotate front 90°
@@ -158,8 +163,13 @@ class Rubiks extends React.Component {
       rotatedPiece = this.rotatePiece(rotatedPiece, notation);
       updatedCube[rotMap[i].y][rotMap[i].x][rotMap[i].z] = rotatedPiece;
     })
-    this.setSides(updatedCube);
-    this.setState({cube: updatedCube});
+    
+    if (!currentCube) {
+      this.setSides(updatedCube);
+      this.setState({cube: updatedCube});
+    } else {
+      return updatedCube;
+    }
   }
 
   rotatePiece = (piece, notation) => {
@@ -232,18 +242,38 @@ class Rubiks extends React.Component {
     return true;
   }
 
-  handleSlider = (e) => {
-    console.log(e.target.value);
+  onMouseDown = () => {
+    this.setState({mouseDown: true});
+  }
+  onMouseUp = () => {
+    this.setState({mouseDown: false});
+  }
+
+  onMouseMove = (e) => {
+    if(this.state.mouseDown) {
+      this.visuallyRotate(e.movementX, e.movementY)
+    }
+  }
+
+  visuallyRotate = (xMovement, yMovement) => {
+    let yValue = this.state.rotateY + xMovement;
+    let xValue = this.state.rotateX - yMovement;
+    if (yValue >= 360 || yValue <= -360) {
+      yValue = 0;
+    }
+    if (xValue >= 360 || xValue <= -360) {
+      xValue = 0;
+    }
+    this.setState({rotateX: xValue, rotateY: yValue})
   }
 
 
   render() {
-    const {cube, sides, show} = this.state;
-
+    const {cube, sides, show, rotateX, rotateY, mouseDown} = this.state;
     if (cube && sides) {
       return (
         <div className='settings'>
-          <div className={`cube show-${show}`}>
+          <div className={`cube show-${show} ${mouseDown ? 'dragging' : ''}}`} onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}style={{transform: `translateZ(-100px) rotateY(${rotateY}deg) rotateX(${rotateX}deg`}}>
             <div className='cube__face cube__face--front'>
               {sides.front.map((piece, i) => {
                 const color = Object.keys(piece).find(key => piece[key] === 'front');
@@ -282,18 +312,6 @@ class Rubiks extends React.Component {
             </div>
           </div>
           <div className='rubik-nav'>
-            <div className="slidecontainer">
-              <input type="range" onChange={this.handleSlider} defaultValue="0" min="-360" max="360" className="slider" id="myRange"/>
-            </div>
-            <button onClick={this.shuffle}>Random</button>
-            <button onClick={this.reset}>Reset</button>
-            <button onClick={() => this.changeSide('top')}>top</button>
-            <button onClick={() => this.changeSide('right')}>right</button>
-            <button onClick={() => this.changeSide('left')}>left</button>
-            <button onClick={() => this.changeSide('bottom')}>bottom</button>
-            <button onClick={() => this.changeSide('back')}>back</button>
-            <button onClick={() => this.changeSide('front')}>front</button>
-
             <button onClick={() => this.rotate('r')}>r</button>
             <button onClick={() => this.rotate('f')}>f</button>
             <button onClick={() => this.rotate('l')}>l</button>
@@ -301,6 +319,8 @@ class Rubiks extends React.Component {
             <button onClick={() => this.rotate('u')}>u</button>
             <button onClick={() => this.rotate('d')}>d</button>
 
+            <button onClick={this.shuffle}>Shuffle</button>
+            <button onClick={this.reset}>Reset</button>
           </div>
           <p className='solved'>Solved: <b className={this.isSolved() ? 'solved-text' : 'unsolved-text'}>{this.isSolved() ? 'true' : 'false'}</b></p>
         </div>
