@@ -19,6 +19,7 @@
   position: relative;
   transform-style: preserve-3d;
   transform: translateZ(-100px);
+  cursor: grab;
   /* transition: transform 1s; */
 }
 
@@ -33,16 +34,20 @@
 }
 
 .piece {
-  color: black;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 8px;
-  border: solid 1px black;
+  border: solid 2px rgb(32, 32, 32);
+  border-radius: 5px;
 }
 
 .rubik-nav {
   margin-top: 80px;
+}
+
+.rubik-nav > button {
+  cursor: pointer;
 }
 
 .solved-text {
@@ -74,7 +79,7 @@
 }
 
 .dragging {
-  cursor: grab;
+  cursor: grabbing;
 }
 
 /* External from here on */
@@ -82,8 +87,9 @@
   position: absolute;
   width: 200px;
   height: 200px;
-  border: 2px solid black;
-  background-color: black;
+  border: 2px solid rgb(32, 32, 32);
+  border-radius: 5px;
+  background-color: rgb(32, 32, 32);
 }
 
 .cube.show-front  { transform: translateZ(-100px) rotateY(   0deg); }

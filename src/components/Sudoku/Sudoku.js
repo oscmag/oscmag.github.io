@@ -42,9 +42,7 @@ class Sudoku extends Component {
     await this.fillNextCell(grid, 0, 0, [1,2,3,4,5,6,7,8,9], animate);
     let end = moment();
     let processingTime = (end - start) / 1000;
-    this.setState({processingTime})
-    // console.log('processing time:', (processingTime + 's'));
-    this.setState({counter: 0});
+    this.setState({processingTime, counter: 0})
   }
 
   fillNextCell = async (grid, i = 0, j = 0, availableNums = [1,2,3,4,5,6,7,8,9], animate) => {
@@ -97,8 +95,6 @@ class Sudoku extends Component {
     };
 
     const isAvailable = await helpers.isAvailable(grid, i, j, rNum);
-
-    console.log(i, j, isAvailable, rNum)
     if (isAvailable) {
       return rNum;
     } else {

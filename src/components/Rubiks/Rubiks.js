@@ -273,7 +273,7 @@ class Rubiks extends React.Component {
     if (cube && sides) {
       return (
         <div className='settings'>
-          <div className={`cube show-${show} ${mouseDown ? 'dragging' : ''}}`} onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}style={{transform: `translateZ(-100px) rotateY(${rotateY}deg) rotateX(${rotateX}deg`}}>
+          <div className={`cube show-${show} ${mouseDown ? 'dragging' : ''}`} onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}style={{transform: `translateZ(-100px) rotateY(${rotateY}deg) rotateX(${rotateX}deg`}}>
             <div className='cube__face cube__face--front'>
               {sides.front.map((piece, i) => {
                 const color = Object.keys(piece).find(key => piece[key] === 'front');
@@ -307,7 +307,7 @@ class Rubiks extends React.Component {
             <div className='cube__face cube__face--bottom'>
               {sides.bottom.map((piece, i) => {
                 const color = Object.keys(piece).find(key => piece[key] === 'bottom');
-                return <div className={`piece ${color}`} key={i}>{(color === 'white' && i === 4) ? <img src={logo} alt='logo' height='30' width='30'/> : ''}</div>;
+                return <div className={`piece ${color}`} key={i}>{(color === 'white' && i === 4) ? <img src={logo} alt='logo' height='40' width='40'/> : ''}</div>;
               })}
             </div>
           </div>
