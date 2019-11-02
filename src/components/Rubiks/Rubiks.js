@@ -58,9 +58,7 @@ class Rubiks extends React.Component {
     this.setSides(cube);
     
     this.setState({
-      side: 'front',
-      rightSide: 'right',
-      topSide: 'top',
+      show: 'front',
       solutionCube: cube,
       cube
     });
@@ -79,20 +77,7 @@ class Rubiks extends React.Component {
   }
 
   changeSide = side => {
-    const {cube} = this.state;
-    let rightSide, topSide;
-
-    // for (let i in cube) {
-    //   for (let j in cube[i]) {
-    //     if (cube[i][j] === rightPiece && i !== side) {
-    //       rightSide = i;
-    //     } else if (cube[i][j] === topPiece && i !== side) {
-    //       topSide = i;
-    //     }
-    //   }
-    // }
-
-    this.setState({side, rightSide: 'back', topSide: 'top'});
+    this.setState({show: side});
   }
 
   shuffle = () => {
@@ -104,7 +89,7 @@ class Rubiks extends React.Component {
   reset = () => {
     const {solutionCube} = this.state;
     this.setSides(solutionCube);
-    this.setState({cube: this.state.solutionCube});
+    this.setState({cube: this.state.solutionCube, show: 'front'});
   }
 
   getRotationMap = (options) => {
@@ -247,34 +232,59 @@ class Rubiks extends React.Component {
     return true;
   }
 
+  handleSlider = (e) => {
+    console.log(e.target.value);
+  }
+
 
   render() {
-    const {cube, side, topSide, rightSide, sides} = this.state;
+    const {cube, sides, show} = this.state;
 
     if (cube && sides) {
       return (
         <div className='settings'>
-          <div className='cube'>
-            <div className={`cube-top ${rightSide === 'back' ? 'diff' : ''}`}>
-              {sides[topSide].map((piece, i) => {
-                const color = Object.keys(piece).find(key => piece[key] === topSide);
+          <div className={`cube show-${show}`}>
+            <div className='cube__face cube__face--front'>
+              {sides.front.map((piece, i) => {
+                const color = Object.keys(piece).find(key => piece[key] === 'front');
                 return <div className={`piece ${color}`} key={i}></div>;
               })}
             </div>
-            <div className='cube-right'>
-              {sides[rightSide].map((piece, i) => {
-                const color = Object.keys(piece).find(key => piece[key] === rightSide);
+            <div className='cube__face cube__face--back'>
+              {sides.back.map((piece, i) => {
+                const color = Object.keys(piece).find(key => piece[key] === 'back');
                 return <div className={`piece ${color}`} key={i}></div>;
               })}
             </div>
-            <div className='cube-front'>
-              {sides[side].map((piece, i) => {
-                const color = Object.keys(piece).find(key => piece[key] === side);
+            <div className='cube__face cube__face--right'>
+              {sides.right.map((piece, i) => {
+                const color = Object.keys(piece).find(key => piece[key] === 'right');
+                return <div className={`piece ${color}`} key={i}></div>;
+              })}
+            </div>
+            <div className='cube__face cube__face--left'>
+              {sides.left.map((piece, i) => {
+                const color = Object.keys(piece).find(key => piece[key] === 'left');
+                return <div className={`piece ${color}`} key={i}></div>;
+              })}
+            </div>
+            <div className='cube__face cube__face--top'>
+              {sides.top.map((piece, i) => {
+                const color = Object.keys(piece).find(key => piece[key] === 'top');
+                return <div className={`piece ${color}`} key={i}></div>;
+              })}
+            </div>
+            <div className='cube__face cube__face--bottom'>
+              {sides.bottom.map((piece, i) => {
+                const color = Object.keys(piece).find(key => piece[key] === 'bottom');
                 return <div className={`piece ${color}`} key={i}>{(color === 'white' && i === 4) ? <img src={logo} alt='logo' height='30' width='30'/> : ''}</div>;
               })}
             </div>
           </div>
           <div className='rubik-nav'>
+            <div className="slidecontainer">
+              <input type="range" onChange={this.handleSlider} defaultValue="0" min="-360" max="360" className="slider" id="myRange"/>
+            </div>
             <button onClick={this.shuffle}>Random</button>
             <button onClick={this.reset}>Reset</button>
             <button onClick={() => this.changeSide('top')}>top</button>
@@ -292,7 +302,7 @@ class Rubiks extends React.Component {
             <button onClick={() => this.rotate('d')}>d</button>
 
           </div>
-          {this.isSolved() ? <p className='solved'>SOLVED</p> : null}
+          <p className='solved'>Solved: <b className={this.isSolved() ? 'solved-text' : 'unsolved-text'}>{this.isSolved() ? 'true' : 'false'}</b></p>
         </div>
       );
     } else return <p>No cube</p>;
