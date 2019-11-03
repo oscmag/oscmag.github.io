@@ -84,27 +84,18 @@ class Rubiks extends React.Component {
   shuffle = async() => {
     const alts = ['d', 'f', 'b', 'l', 'r', 'u'];
     const operations = [];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 20; i++) {
       const r = Math.floor(Math.random() * 6);
       operations.push(alts[r]);
     }
-
-    this.rotate(operations[0], true);
-    await this.sleep(200);
-    this.rotate(operations[1], true);
-    await this.sleep(200);
-    this.rotate(operations[2], true);
-    await this.sleep(200);
-    this.rotate(operations[3], true);
-    await this.sleep(200);
-    this.rotate(operations[4], true);
-    await this.sleep(200);
-    this.rotate(operations[5], true);
-    await this.sleep(200);
-    this.rotate(operations[6], true);
-    await this.sleep(200);
-    this.rotate(operations[7], true);
-    await this.sleep(200);
+    let timer = 0;
+    operations.forEach(async (operation, i) => {
+      if (i > 0) {
+        timer += 200;
+        await this.sleep(timer);
+      }
+      this.rotate(operation, true);
+    })
   }
 
   reset = () => {
@@ -213,9 +204,9 @@ class Rubiks extends React.Component {
   }
 
   render() {
-    const {cube, sides, rotateX, rotateY, mouseDown, rotate, levels} = this.state;
+    const {cube, rotateX, rotateY, mouseDown, rotate, levels} = this.state;
 
-    if (cube && sides) {
+    if (cube) {
       return (
         <div className='settings' onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp}>
           <div className={`cube ${mouseDown ? 'dragging' : ''}`} onMouseDown={this.onMouseDown} style={{transform: `translateZ(-80px) rotateY(${rotateY}deg) rotateX(${rotateX}deg`}}>
