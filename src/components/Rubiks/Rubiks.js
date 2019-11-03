@@ -1,7 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import logo from '../../assets/rubiks_cube_logo.png';
 
+import CubeFace from './CubeFace';
+import RubiksNav from './RubiksNav';
 import './Rubiks.css';
 
 class Rubiks extends React.Component {
@@ -283,67 +284,16 @@ class Rubiks extends React.Component {
       return (
         <div className='settings' onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp}>
           <div className={`cube show-${show} ${mouseDown ? 'dragging' : ''}`} onMouseDown={this.onMouseDown} style={{transform: `translateZ(-100px) rotateY(${rotateY}deg) rotateX(${rotateX}deg`}}>
-            <div className='cube__face cube__face--front'>
-              {sides.front.map((piece, i) => {
-                const color = Object.keys(piece).find(key => piece[key] === 'front');
-                return <div className={`piece ${color}`} key={i}></div>;
-              })}
-            </div>
-            <div className='cube__face cube__face--back'>
-              {sides.back.map((piece, i) => {
-                const color = Object.keys(piece).find(key => piece[key] === 'back');
-                return <div className={`piece ${color}`} key={i}></div>;
-              })}
-            </div>
-            <div className='cube__face cube__face--right'>
-              {sides.right.map((piece, i) => {
-                const color = Object.keys(piece).find(key => piece[key] === 'right');
-                return <div className={`piece ${color}`} key={i}></div>;
-              })}
-            </div>
-            <div className='cube__face cube__face--left'>
-              {sides.left.map((piece, i) => {
-                const color = Object.keys(piece).find(key => piece[key] === 'left');
-                return <div className={`piece ${color}`} key={i}></div>;
-              })}
-            </div>
-            <div className='cube__face cube__face--top'>
-              {sides.top.map((piece, i) => {
-                const color = Object.keys(piece).find(key => piece[key] === 'top');
-                return <div className={`piece ${color}`} key={i}></div>;
-              })}
-            </div>
-            <div className='cube__face cube__face--bottom'>
-              {sides.bottom.map((piece, i) => {
-                const color = Object.keys(piece).find(key => piece[key] === 'bottom');
-                return <div className={`piece ${color}`} key={i}>{(color === 'white' && i === 4) ? <img src={logo} alt='logo' height='40' width='40'/> : ''}</div>;
-              })}
-            </div>
+            {['front','back','right','left','top','bottom'].map((side, i) => {
+              return <CubeFace sides={sides} side={side} key={i}/>
+            })}
           </div>
-          <div className='rubik-nav'>
-            <div className='r-button' onClick={() => this.rotate('r')}>r</div>
-            <div className='r-button' onClick={() => this.rotate('f')}>f</div>
-            <div className='r-button' onClick={() => this.rotate('l')}>l</div>
-            <div className='r-button' onClick={() => this.rotate('b')}>b</div>
-            <div className='r-button' onClick={() => this.rotate('u')}>u</div>
-            <div className='r-button' onClick={() => this.rotate('d')}>d</div>
-
-            <div className='r-button' onClick={this.shuffle}>Shuffle</div>
-            <div className='r-button' onClick={this.reset}>Reset</div>
-          </div>
+          <RubiksNav rotate={this.rotate} shuffle={this.shuffle} reset={this.reset}/>
           <p className='solved'>Solved: <b className={this.isSolved() ? 'solved-text' : 'unsolved-text'}>{this.isSolved() ? 'true' : 'false'}</b></p>
         </div>
       );
     } else return <p>No cube</p>;
   }
-  // render() {
-  //   const {character} = this.context;
-  //   return (
-  //     <div className='settings'>
-  //       Settings
-  //     </div>
-  //   );
-  // }
 }
 
 export default withRouter(Rubiks);
