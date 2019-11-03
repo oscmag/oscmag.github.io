@@ -16,37 +16,37 @@ class Rubiks extends React.Component {
   componentDidMount = () => {
 
     // corner pieces
-    const cp1 = {yellow: 'top', blue: 'back', red: 'left'}
-    const cp2 = {yellow: 'top', blue: 'back', orange: 'right'}
-    const cp3 = {yellow: 'top', green: 'front', red: 'left'}
-    const cp4 = {yellow: 'top', green: 'front', orange: 'right'}
+    const cp1 = {white: 'top', blue: 'back', orange: 'left'}
+    const cp2 = {white: 'top', blue: 'back', red: 'right'}
+    const cp3 = {white: 'top', green: 'front', orange: 'left'}
+    const cp4 = {white: 'top', green: 'front', red: 'right'}
 
-    const cp5 = {white: 'bottom', blue: 'back', red: 'left'}
-    const cp6 = {white: 'bottom', blue: 'back', orange: 'right'}
-    const cp7 = {white: 'bottom', green: 'front', red: 'left'}
-    const cp8 = {white: 'bottom', green: 'front', orange: 'right'}
+    const cp5 = {yellow: 'bottom', blue: 'back', orange: 'left'}
+    const cp6 = {yellow: 'bottom', blue: 'back', red: 'right'}
+    const cp7 = {yellow: 'bottom', green: 'front', orange: 'left'}
+    const cp8 = {yellow: 'bottom', green: 'front', red: 'right'}
 
     // edge pieces
-    const ep1 = {yellow: 'top', blue: 'back'}
-    const ep2 = {yellow: 'top', orange: 'right'}
-    const ep3 = {yellow: 'top', red: 'left'}
-    const ep4 = {yellow: 'top', green: 'front'}
+    const ep1 = {white: 'top', blue: 'back'}
+    const ep2 = {white: 'top', red: 'right'}
+    const ep3 = {white: 'top', orange: 'left'}
+    const ep4 = {white: 'top', green: 'front'}
 
-    const ep5 = {white: 'bottom', blue: 'back'}
-    const ep6 = {white: 'bottom', orange: 'right'}
-    const ep7 = {white: 'bottom', red: 'left'}
-    const ep8 = {white: 'bottom', green: 'front'}
+    const ep5 = {yellow: 'bottom', blue: 'back'}
+    const ep6 = {yellow: 'bottom', red: 'right'}
+    const ep7 = {yellow: 'bottom', orange: 'left'}
+    const ep8 = {yellow: 'bottom', green: 'front'}
 
-    const ep9 = {green: 'front', orange: 'right'}
-    const ep10 = {green: 'front', red: 'left'}
-    const ep11 = {blue: 'back', red: 'left'}
-    const ep12 = {blue: 'back', orange: 'right'}
+    const ep9 = {green: 'front', red: 'right'}
+    const ep10 = {green: 'front', orange: 'left'}
+    const ep11 = {blue: 'back', orange: 'left'}
+    const ep12 = {blue: 'back', red: 'right'}
 
     // center (mid) pieces
-    const mp1 = {yellow: 'top'}
-    const mp2 = {white: 'bottom'}
-    const mp3 = {red: 'left'}
-    const mp4 = {orange: 'right'}
+    const mp1 = {white: 'top'}
+    const mp2 = {yellow: 'bottom'}
+    const mp3 = {orange: 'left'}
+    const mp4 = {red: 'right'}
     const mp5 = {blue: 'back'}
     const mp6 = {green: 'front'}
 

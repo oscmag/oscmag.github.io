@@ -38,10 +38,6 @@
   user-select: none;
 }
 
-.piece > img {
-  -webkit-user-drag: none;
-}
-
 .solved-text {
   color: green;
 }
@@ -100,6 +96,14 @@
   border: 4px solid rgb(32, 32, 32);
   border-radius: 5px;
   /* background-color: rgb(32, 32, 32); */
+}
+
+.cube-face > img {
+  align-self: center;
+  justify-self: center;
+  -webkit-user-drag: none;
+  margin-left: 10px;
+  margin-top: 9px;
 }
 
 /* .cube.show-front  { transform: translateZ(-100px) rotateY(   0deg); }
