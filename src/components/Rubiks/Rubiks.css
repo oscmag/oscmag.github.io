@@ -1,5 +1,5 @@
 .settings {
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
@@ -47,14 +47,6 @@
   -webkit-user-drag: none;
 }
 
-.rubik-nav {
-  margin-top: 80px;
-}
-
-.rubik-nav > button {
-  cursor: pointer;
-}
-
 .solved-text {
   color: green;
 }
@@ -85,6 +77,21 @@
 
 .dragging {
   cursor: grabbing;
+}
+
+.rubik-nav {
+  display: flex;
+  margin-top: 60px;
+}
+
+.r-button {
+  background-color: white;
+  padding: 8px;
+  margin: 5px;
+  cursor: pointer;
+  border: rgb(83, 66, 66) solid 1px;
+  border-radius: 5px;
+  user-select: none;
 }
 
 /* External from here on */

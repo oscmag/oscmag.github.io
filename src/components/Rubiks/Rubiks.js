@@ -321,15 +321,15 @@ class Rubiks extends React.Component {
             </div>
           </div>
           <div className='rubik-nav'>
-            <button onClick={() => this.rotate('r')}>r</button>
-            <button onClick={() => this.rotate('f')}>f</button>
-            <button onClick={() => this.rotate('l')}>l</button>
-            <button onClick={() => this.rotate('b')}>b</button>
-            <button onClick={() => this.rotate('u')}>u</button>
-            <button onClick={() => this.rotate('d')}>d</button>
+            <div className='r-button' onClick={() => this.rotate('r')}>r</div>
+            <div className='r-button' onClick={() => this.rotate('f')}>f</div>
+            <div className='r-button' onClick={() => this.rotate('l')}>l</div>
+            <div className='r-button' onClick={() => this.rotate('b')}>b</div>
+            <div className='r-button' onClick={() => this.rotate('u')}>u</div>
+            <div className='r-button' onClick={() => this.rotate('d')}>d</div>
 
-            <button onClick={this.shuffle}>Shuffle</button>
-            <button onClick={this.reset}>Reset</button>
+            <div className='r-button' onClick={this.shuffle}>Shuffle</div>
+            <div className='r-button' onClick={this.reset}>Reset</div>
           </div>
           <p className='solved'>Solved: <b className={this.isSolved() ? 'solved-text' : 'unsolved-text'}>{this.isSolved() ? 'true' : 'false'}</b></p>
         </div>
