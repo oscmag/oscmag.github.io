@@ -64,7 +64,7 @@ class Rubiks extends React.Component {
     });
   }
 
-  setSides = (cube) => {
+  setSides = (cube, noStateUpdate) => {
     const sides = {
       front: [cube[0][0][0], cube[0][1][0], cube[0][2][0], cube[1][0][0], cube[1][1][0], cube[1][2][0], cube[2][0][0], cube[2][1][0], cube[2][2][0]],
       back: [cube[0][2][2], cube[0][1][2], cube[0][0][2], cube[1][2][2], cube[1][1][2], cube[1][0][2], cube[2][2][2], cube[2][1][2], cube[2][0][2]],
@@ -73,22 +73,29 @@ class Rubiks extends React.Component {
       top: [cube[0][0][2], cube[0][1][2], cube[0][2][2], cube[0][0][1], cube[0][1][1], cube[0][2][1], cube[0][0][0], cube[0][1][0], cube[0][2][0]],
       bottom: [cube[2][0][0], cube[2][1][0], cube[2][2][0], cube[2][0][1], cube[2][1][1], cube[2][2][1], cube[2][0][2], cube[2][1][2], cube[2][2][2]],
     }
-    this.setState({sides});
+    if (!noStateUpdate) {
+      this.setState({sides});
+    } else {
+      return sides;
+    }
   }
 
-  // changeSide = side => {
-  //   this.setState({show: side});
-  // }
-
   shuffle = () => {
-    let cube = JSON.parse(JSON.stringify(this.state.cube));
+    let {cube, sides} = this.state;
+    // let cube = JSON.parse(JSON.stringify(cube));
     const alts = ['d', 'f', 'b', 'l', 'r', 'u'];
+    const operations = [];
     for (let i = 0; i < 30; i++) {
       const r = Math.floor(Math.random() * 6);
-      cube = this.rotate(alts[r], cube);
+      operations.push(alts[r]);
     }
-    this.setSides(cube);
-    this.setState({cube});
+    const cubeAndSides = operations.reduce((acc, operation) => {
+      let updatedCube = JSON.parse(JSON.stringify(acc.cube));
+      return this.rotate(operation, updatedCube, acc.sides);
+    }, {cube, sides});
+    
+    this.setSides(cubeAndSides.cube);
+    this.setState({cube: cubeAndSides.cube});
   }
 
   reset = () => {
@@ -126,9 +133,10 @@ class Rubiks extends React.Component {
     return arr;
   }
 
-  rotate = (notation, currentCube) => {
-    const {cube, sides} = this.state;
+  rotate = (notation, currentCube, currentSides) => {
+    let {cube, sides} = this.state;
     let updatedCube = JSON.parse(JSON.stringify(currentCube || cube));
+    sides = currentSides || sides;
 
     const notationsMap = {
       f: 'front',   // rotate front 90°
@@ -168,7 +176,8 @@ class Rubiks extends React.Component {
       this.setSides(updatedCube);
       this.setState({cube: updatedCube});
     } else {
-      return updatedCube;
+      let updatedSides = this.setSides(updatedCube, true);
+      return {cube: updatedCube, sides: updatedSides};
     }
   }
 
