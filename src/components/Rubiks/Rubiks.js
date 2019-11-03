@@ -155,7 +155,6 @@ class Rubiks extends React.Component {
     this.setState({rotateX: xValue, rotateY: yValue})
   }
 
-
   render() {
     const {cube, sides, show, rotateX, rotateY, mouseDown} = this.state;
     if (cube && sides) {
