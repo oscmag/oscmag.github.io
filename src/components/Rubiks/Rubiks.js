@@ -10,7 +10,7 @@ class Rubiks extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {rotateX: 0, rotateY: 0};
+    this.state = {rotateX: 0, rotateY: 0, rotate: undefined, levels: 'horizontal'};
   }
 
   componentDidMount = () => {
@@ -53,14 +53,13 @@ class Rubiks extends React.Component {
 
     const cube = [
       [ [cp3, ep3, cp1],    [ep4, mp1, ep1],    [cp4, ep2, cp2] ],
-      [ [ep10, mp3, ep11],  [mp6, null, mp5],   [ep9, mp4, ep12] ],
+      [ [ep10, mp3, ep11],  [mp6, {}, mp5],   [ep9, mp4, ep12] ],
       [ [cp7, ep7, cp5],    [ep8, mp2, ep5],    [cp8, ep6, cp6] ]
     ];
 
     this.setSides(cube);
     
     this.setState({
-      show: 'front',
       solutionCube: cube,
       cube
     });
@@ -104,14 +103,29 @@ class Rubiks extends React.Component {
   reset = () => {
     const {solutionCube} = this.state;
     this.setSides(solutionCube);
-    this.setState({cube: this.state.solutionCube, rotateX: 0, rotateY: 0});
+    this.setState({cube: this.state.solutionCube, rotateX: 0, rotateY: 0, rott: !this.state.rott});
   }
 
-  rotate = (notation) => {
-    const {cube, sides} = this.state;
-    const updatedCube = rotate(notation, cube, sides);
-    this.setSides(updatedCube);
-    this.setState({cube: updatedCube});
+  rotate = async (notation) => {
+    let levels;
+    if (['r','l'].includes(notation)) {
+      levels = 'vertical';
+    } else if (['f','b'].includes(notation)) {
+      levels = 'depth';
+    } else {
+      levels = 'horizontal';
+    }
+
+    this.setState({levels});
+    await this.sleep(10);
+    this.setState({rotate: notation})
+    
+    setTimeout(() => {
+      const {cube, sides} = this.state;
+      const updatedCube = rotate(notation, cube, sides);
+      this.setSides(updatedCube);
+      this.setState({cube: updatedCube, rotate: undefined});
+    }, 500)
   }
 
   isSolved = () => {
@@ -143,6 +157,42 @@ class Rubiks extends React.Component {
     }
   }
 
+  getClasses = (i, j, k) => {
+    let classes = '';
+    if (j === 2) {
+      classes += ' rightPiece';
+    }
+    if (j === 1) {
+      classes += ' midVertPiece';
+    }
+    if (j === 0) {
+      classes += ' leftPiece';
+    }
+    if (i === 2) {
+      classes += ' bottomPiece';
+    }
+    if (i === 1) {
+      classes += ' midHorPiece';
+    }
+    if (i === 0) {
+      classes += ' topPiece';
+    }
+    if (k === 2) {
+      classes += ' backPiece';
+    }
+    if (k === 1) {
+      classes += ' midDepthPiece';
+    }
+    if (k === 0) {
+      classes += ' frontPiece';
+    }
+    return classes;
+  }
+
+  sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   visuallyRotate = (xMovement, yMovement) => {
     let yValue = this.state.rotateY + xMovement;
     let xValue = this.state.rotateX - yMovement;
@@ -156,13 +206,168 @@ class Rubiks extends React.Component {
   }
 
   render() {
-    const {cube, sides, show, rotateX, rotateY, mouseDown} = this.state;
+    const {cube, sides, rotateX, rotateY, mouseDown, rotate, levels} = this.state;
+
     if (cube && sides) {
       return (
         <div className='settings' onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp}>
-          <div className={`cube show-${show} ${mouseDown ? 'dragging' : ''}`} onMouseDown={this.onMouseDown} style={{transform: `translateZ(-100px) rotateY(${rotateY}deg) rotateX(${rotateX}deg`}}>
-            {['front','back','right','left','top','bottom'].map((side, i) => {
-              return <CubeFace sides={sides} side={side} key={i}/>
+          <div className={`cube ${mouseDown ? 'dragging' : ''}`} onMouseDown={this.onMouseDown} style={{transform: `translateZ(-80px) rotateY(${rotateY}deg) rotateX(${rotateX}deg`}}>
+            {cube.map((y, i) => {
+              if (levels === 'horizontal') {
+                if (i === 0) {
+                  return <div className={`first-level ${rotate === 'u' ? 'rotateU' : ''}`} key={i}>
+                  {y.map((x, j) => {
+                    return x.map((z, k) => {
+                      let classes = this.getClasses(i, j, k);
+                      return (
+                        <div className={`piece-3d ${classes}`} key={k}>
+                          {['front','back','right','left','top','bottom'].map((side, l) => {
+                            return <CubeFace side={side} key={l} piece={z}/>
+                          })}
+                        </div>
+                      )
+                    });
+                  })}
+                  </div>
+                } else if (i === 1) {
+                  return <div className='second-level' key={i}>
+                  {y.map((x, j) => {
+                    return x.map((z, k) => {
+                      let classes = this.getClasses(i, j, k);
+                      return (
+                        <div className={`piece-3d ${classes}`} key={k}>
+                          {['front','back','right','left','top','bottom'].map((side, l) => {
+                            return <CubeFace side={side} key={l} piece={z}/>
+                          })}
+                        </div>
+                      )
+                    });
+                  })}
+                  </div>
+                } else if (i === 2) {
+                  return <div className={`third-level ${rotate === 'd' ? 'rotateD' : ''}`} key={i}>
+                  {y.map((x, j) => {
+                    return x.map((z, k) => {
+                      let classes = this.getClasses(i, j, k);
+                      return (
+                        <div className={`piece-3d ${classes}`} key={k}>
+                          {['front','back','right','left','top','bottom'].map((side, l) => {
+                            return <CubeFace side={side} key={l} piece={z}/>
+                          })}
+                        </div>
+                      )
+                    })}
+                  )}
+                  </div>
+                }
+              } else if (levels === 'vertical') {
+                return (
+                  <>
+                    <div className={`first-level ${rotate === 'l' ? 'rotateL' : ''}`} key='1'>
+                      {y.map((x, j) => {
+                        if (j === 0) {
+                          return x.map((z, k) => {
+                            let classes = this.getClasses(i, j, k);
+                            return (
+                              <div className={`piece-3d ${classes}`} key={k}>
+                                {['front','back','right','left','top','bottom'].map((side, l) => {
+                                  return <CubeFace side={side} key={l} piece={z}/>
+                                })}
+                              </div>
+                            )
+                          })
+                        }
+                        return;
+                      })}
+                    </div>
+                    <div className={'second-level'} key='2'>
+                      {y.map((x, j) => {
+                        if (j === 1) {
+                          return x.map((z, k) => {
+                            let classes = this.getClasses(i, j, k);
+                            return (
+                              <div className={`piece-3d ${classes}`} key={k}>
+                                {['front','back','right','left','top','bottom'].map((side, l) => {
+                                  return <CubeFace side={side} key={l} piece={z}/>
+                                })}
+                              </div>
+                            )
+                          })
+                        } 
+                      })}
+                  </div>
+                  <div className={`third-level ${rotate === 'r' ? 'rotateR' : ''}`} key='3'>
+                      {y.map((x, j) => {
+                        if (j === 2) {
+                          return x.map((z, k) => {
+                            let classes = this.getClasses(i, j, k);
+                            return (
+                              <div className={`piece-3d ${classes}`} key={k}>
+                                {['front','back','right','left','top','bottom'].map((side, l) => {
+                                  return <CubeFace side={side} key={l} piece={z}/>
+                                })}
+                              </div>
+                            )
+                          })
+                        } 
+                      })}
+                    </div>
+                </>
+                )
+              } else if (levels === 'depth') {
+                return (
+                  <>
+                    <div className={`first-level ${rotate === 'f' ? 'rotateF' : ''}`} key='1'>
+                        {y.map((x, j) => {
+                          return x.map((z, k) => {
+                            if (k === 0) {
+                              let classes = this.getClasses(i, j, k);
+                              return (
+                                <div className={`piece-3d ${classes}`} key={i}>
+                                  {['front','back','right','left','top','bottom'].map((side, l) => {
+                                    return <CubeFace side={side} key={l} piece={z}/>
+                                  })}
+                                </div>
+                              )
+                            } 
+                          })}
+                        )}
+                      </div>
+                      <div className={'second-level'} key='2'>
+                        {y.map((x, j) => {
+                          return x.map((z, k) => {
+                            if (k === 1) {
+                              let classes = this.getClasses(i, j, k);
+                              return (
+                                <div className={`piece-3d ${classes}`} key={i}>
+                                  {['front','back','right','left','top','bottom'].map((side, l) => {
+                                    return <CubeFace side={side} key={l} piece={z}/>
+                                  })}
+                                </div>
+                              )
+                            } 
+                          })
+                        })}
+                    </div>
+                    <div className={`third-level ${rotate === 'b' ? 'rotateB' : ''}`} key='3'>
+                        {y.map((x, j) => {
+                          return x.map((z, k) => {
+                            if (k === 2) {
+                              let classes = this.getClasses(i, j, k);
+                              return (
+                                <div className={`piece-3d ${classes}`} key={i}>
+                                  {['front','back','right','left','top','bottom'].map((side, l) => {
+                                    return <CubeFace side={side} key={l} piece={z}/>
+                                  })}
+                                </div>
+                              )
+                            } 
+                          })}
+                        )}
+                      </div>
+                  </>
+                )
+              }
             })}
           </div>
           <RubiksNav rotate={this.rotate} shuffle={this.shuffle} reset={this.reset}/>
