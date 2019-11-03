@@ -81,23 +81,30 @@ class Rubiks extends React.Component {
     }
   }
 
-  shuffle = () => {
-    let {cube, sides} = this.state;
+  shuffle = async() => {
     const alts = ['d', 'f', 'b', 'l', 'r', 'u'];
     const operations = [];
     for (let i = 0; i < 30; i++) {
       const r = Math.floor(Math.random() * 6);
       operations.push(alts[r]);
     }
-    const cubeAndSides = operations.reduce((acc, operation) => {
-      let updatedCube = JSON.parse(JSON.stringify(acc.cube));
-      updatedCube = rotate(operation, updatedCube, acc.sides);
-      let sides = this.setSides(updatedCube, true);
-      return {cube: updatedCube, sides}
-    }, {cube, sides});
-    
-    this.setSides(cubeAndSides.cube);
-    this.setState({cube: cubeAndSides.cube});
+
+    this.rotate(operations[0], true);
+    await this.sleep(200);
+    this.rotate(operations[1], true);
+    await this.sleep(200);
+    this.rotate(operations[2], true);
+    await this.sleep(200);
+    this.rotate(operations[3], true);
+    await this.sleep(200);
+    this.rotate(operations[4], true);
+    await this.sleep(200);
+    this.rotate(operations[5], true);
+    await this.sleep(200);
+    this.rotate(operations[6], true);
+    await this.sleep(200);
+    this.rotate(operations[7], true);
+    await this.sleep(200);
   }
 
   reset = () => {
@@ -106,7 +113,7 @@ class Rubiks extends React.Component {
     this.setState({cube: this.state.solutionCube, rotateX: 0, rotateY: 0, rott: !this.state.rott});
   }
 
-  rotate = async (notation) => {
+  rotate = async (notation, shuffling) => {
     let levels;
     if (['r','l'].includes(notation)) {
       levels = 'vertical';
@@ -115,9 +122,9 @@ class Rubiks extends React.Component {
     } else {
       levels = 'horizontal';
     }
-
+    const timer = shuffling ? 110 : 200;
     this.setState({levels});
-    await this.sleep(10);
+    await this.sleep(100);
     this.setState({rotate: notation})
     
     setTimeout(() => {
@@ -125,7 +132,7 @@ class Rubiks extends React.Component {
       const updatedCube = rotate(notation, cube, sides);
       this.setSides(updatedCube);
       this.setState({cube: updatedCube, rotate: undefined});
-    }, 500)
+    }, timer)
   }
 
   isSolved = () => {
