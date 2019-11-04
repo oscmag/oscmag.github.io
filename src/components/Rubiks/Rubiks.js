@@ -257,7 +257,7 @@ class Rubiks extends React.Component {
                     })}
                   )}
                   </div>
-                }
+                } else return null;
               } else if (levels === 'vertical') {
                 return (
                   <>
@@ -274,8 +274,7 @@ class Rubiks extends React.Component {
                               </div>
                             )
                           })
-                        }
-                        return;
+                        } else return null;
                       })}
                     </div>
                     <div className={'second-level'} key='2'>
@@ -291,7 +290,7 @@ class Rubiks extends React.Component {
                               </div>
                             )
                           })
-                        } 
+                        } else return null;
                       })}
                   </div>
                   <div className={`third-level ${rotate === 'r' ? 'rotateR' : ''}`} key='3'>
@@ -307,7 +306,7 @@ class Rubiks extends React.Component {
                               </div>
                             )
                           })
-                        } 
+                        } else return null; 
                       })}
                     </div>
                 </>
@@ -327,7 +326,7 @@ class Rubiks extends React.Component {
                                   })}
                                 </div>
                               )
-                            } 
+                            } else return null;
                           })}
                         )}
                       </div>
@@ -343,7 +342,7 @@ class Rubiks extends React.Component {
                                   })}
                                 </div>
                               )
-                            } 
+                            } else return null;
                           })
                         })}
                     </div>
@@ -359,13 +358,13 @@ class Rubiks extends React.Component {
                                   })}
                                 </div>
                               )
-                            } 
+                            } else return null;
                           })}
                         )}
                       </div>
                   </>
                 )
-              }
+              } else return null;
             })}
           </div>
           <RubiksNav rotate={this.rotate} shuffle={this.shuffle} reset={this.reset}/>
