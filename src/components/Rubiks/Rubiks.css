@@ -8,7 +8,7 @@
 }
 
 .cube {
-  margin-top: 60px;
+  margin-top: 80px;
   display: flex;
   width: 180px;
   height: 180px;
@@ -76,13 +76,20 @@
 
 .rubik-nav {
   display: flex;
-  margin-top: 60px;
+  flex-direction: column;
+  margin-top: 80px;
+}
+
+.rubik-nav > div {
+  display: flex;
+  justify-content: center;
 }
 
 .r-button {
   background-color: white;
   padding: 8px;
   margin: 5px;
+  min-width: 15px;
   cursor: pointer;
   border: rgb(83, 66, 66) solid 1px;
   border-radius: 5px;
@@ -185,11 +192,19 @@
   transform: rotateY(-90deg);
   transition: transform .2s;
 }
+.second-level.rotateE { 
+  transform: rotateY(90deg);
+  transition: transform .2s;
+}
 .third-level.rotateD { 
   transform: rotateY(90deg);
   transition: transform .2s;
 }
 .first-level.rotateL { 
+  transform: rotateX(-90deg);
+  transition: transform .2s;
+}
+.second-level.rotateM { 
   transform: rotateX(-90deg);
   transition: transform .2s;
 }
@@ -201,7 +216,48 @@
   transform: rotateZ(90deg);
   transition: transform .2s;
 }
+.second-level.rotateS { 
+  transform: rotateZ(90deg);
+  transition: transform .2s;
+}
 .third-level.rotateB { 
   transform: rotateZ(-90deg);
+  transition: transform .2s;
+}
+
+.first-level.rotateUPrime { 
+  transform: rotateY(90deg);
+  transition: transform .2s;
+}
+.second-level.rotateEPrime { 
+  transform: rotateY(-90deg);
+  transition: transform .2s;
+}
+.third-level.rotateDPrime { 
+  transform: rotateY(-90deg);
+  transition: transform .2s;
+}
+.first-level.rotateLPrime { 
+  transform: rotateX(90deg);
+  transition: transform .2s;
+}
+.second-level.rotateMPrime { 
+  transform: rotateX(90deg);
+  transition: transform .2s;
+}
+.third-level.rotateRPrime { 
+  transform: rotateX(-90deg);
+  transition: transform .2s;
+}
+.first-level.rotateFPrime { 
+  transform: rotateZ(-90deg);
+  transition: transform .2s;
+}
+.second-level.rotateSPrime { 
+  transform: rotateZ(-90deg);
+  transition: transform .2s;
+}
+.third-level.rotateBPrime { 
+  transform: rotateZ(90deg);
   transition: transform .2s;
 }

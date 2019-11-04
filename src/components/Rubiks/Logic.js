@@ -1,24 +1,61 @@
 export const rotate = function (notation, cube, sides) {
+  let twice = false;
+  if (notation.length === 2) {
+    notation = notation[0];
+    twice = true;
+  }
   let updatedCube = JSON.parse(JSON.stringify(cube));
   const notationsMap = {
-    f: 'front',   // rotate front 90°
-    r: 'right',   // rotate right 90°
-    u: 'top',     // rotate top 90°
-    l: 'left',    // rotate left 90°
-    b: 'back',    // rotate back 90°
-    d: 'bottom',  // rotate bottom 90°
+    F: 'front',   // rotate front 90°
+    R: 'right',   // rotate right 90°
+    U: 'top',     // rotate top 90°
+    L: 'left',    // rotate left 90°
+    B: 'back',    // rotate back 90°
+    D: 'bottom',  // rotate bottom 90°
+
+    Fprime: 'front',   // rotate front -90°
+    Rprime: 'right',   // rotate right -90°
+    Uprime: 'top',     // rotate top -90°
+    Lprime: 'left',    // rotate left -90°
+    Bprime: 'back',    // rotate back -90°
+    Dprime: 'bottom',  // rotate bottom -90°
+
+    M: 'middleM',
+    E: 'middleE',
+    S: 'middleS',
+
+    Mprime: 'middleM',
+    Eprime: 'middleE',
+    Sprime: 'middleS',
   }
   const side = notationsMap[notation];
 
   const rotationArgs = {
-    r: ['x', 2, 'z', 'y', 'inc', 'decr'],
-    u: ['y', 0, 'x', 'z', 'decr', 'decr'],
-    d: ['y', 2, 'x', 'z', 'inc', 'decr'],
-    f: ['z', 0, 'x', 'y', 'inc', 'decr'],
-    b: ['z', 2, 'x', 'y', 'inc', 'inc'],
-    l: ['x', 0, 'z', 'y', 'inc', 'inc']
-  }
+    //clockwise
+    R: ['x', 2, 'z', 'y', 'inc', 'decr'],
+    U: ['y', 0, 'x', 'z', 'decr', 'decr'],
+    D: ['y', 2, 'x', 'z', 'inc', 'decr'],
+    F: ['z', 0, 'x', 'y', 'inc', 'decr'],
+    B: ['z', 2, 'x', 'y', 'inc', 'inc'],
+    L: ['x', 0, 'z', 'y', 'inc', 'inc'],
+    
+    M: ['x', 1, 'z', 'y', 'inc', 'inc'],
+    S: ['z', 1, 'x', 'y', 'inc', 'decr'],
+    E: ['y', 1, 'x', 'z', 'inc', 'decr'],
 
+    //counter clockwise
+    Rprime: ['x', 2, 'z', 'y', 'decr', 'inc'],
+    Uprime: ['y', 0, 'x', 'z', 'inc', 'inc'],
+    Dprime: ['y', 2, 'x', 'z', 'decr', 'inc'],
+    Fprime: ['z', 0, 'x', 'y', 'decr', 'inc'],
+    Bprime: ['z', 2, 'x', 'y', 'decr', 'decr'],
+    Lprime: ['x', 0, 'z', 'y', 'decr', 'decr'],
+
+    Mprime: ['x', 1, 'z', 'y', 'decr', 'decr'],
+    Sprime: ['z', 1, 'x', 'y', 'decr', 'inc'],
+    Eprime: ['y', 1, 'x', 'z', 'decr', 'inc'],
+  }
+  
   const options = {
     staticAxis: rotationArgs[notation][0], 
     staticValue: rotationArgs[notation][1], 
@@ -29,11 +66,20 @@ export const rotate = function (notation, cube, sides) {
   };
 
   const rotMap = getRotationMap(options);
+
   sides[side].forEach((piece, i) => {
     let rotatedPiece = JSON.parse(JSON.stringify(piece));
     rotatedPiece = rotatePiece(rotatedPiece, notation);
     updatedCube[rotMap[i].y][rotMap[i].x][rotMap[i].z] = rotatedPiece;
   })
+
+  if (twice) {
+    sides[side].forEach((piece, i) => {
+      let rotatedPiece = JSON.parse(JSON.stringify(piece));
+      rotatedPiece = rotatePiece(rotatedPiece, notation);
+      updatedCube[rotMap[i].y][rotMap[i].x][rotMap[i].z] = rotatedPiece;
+    })
+  }
   
   return updatedCube;
 }
@@ -42,92 +88,128 @@ const rotatePiece = (piece, notation) => {
   let rotatedPiece = JSON.parse(JSON.stringify(piece));
   let rotationMap = {
     //clockwise
-    f: {
+    F: {
       top: 'right',
       bottom: 'left',
       right: 'bottom',
       left: 'top',
       front: 'front'
     },
-    r: {
+    R: {
       top: 'back',
       bottom: 'front',
       front: 'top',
       back: 'bottom',
       right: 'right',
     },
-    u: {
+    U: {
       front: 'left',
       left: 'back',
       back: 'right',
       right: 'front',
       top: 'top'
     },
-    l: {
+    L: {
       front: 'bottom',
       bottom: 'back',
       back: 'top',
       top: 'front',
       left: 'left'
     },
-    b: {
+    B: {
       top: 'left',
       left: 'bottom',
       bottom: 'right',
       right: 'top',
       back: 'back'
     },
-    d: {
+    D: {
       front: 'right',
       right: 'back',
       back: 'left',
       left: 'front',
       bottom: 'bottom'
+    },
+    M: {
+      front: 'bottom',
+      bottom: 'back',
+      back: 'top',
+      top: 'front',
+    },
+    E: {
+      front: 'right',
+      right: 'back',
+      back: 'left',
+      left: 'front',
+    },
+    S: {
+      top: 'right',
+      bottom: 'left',
+      right: 'bottom',
+      left: 'top',
     },
 
     //Counter clockwise
-    fPrime: {
+    Fprime: {
       right: 'top',
       left: 'bottom',
       bottom: 'right',
       top: 'left',
       front: 'front'
     },
-    rPrime: {
+    Rprime: {
       back: 'top',
       front: 'bottom',
       top: 'front',
       bottom: 'back',
       right: 'right',
     },
-    uPrime: {
+    Uprime: {
       left: 'front',
       back: 'left',
       right: 'back',
       front: 'right',
       top: 'top'
     },
-    lPrime: {
+    Lprime: {
       bottom: 'front',
       back: 'bottom',
       top: 'back',
       front: 'top',
       left: 'left'
     },
-    bPrime: {
+    Bprime: {
       left: 'top',
       bottom: 'left',
       right: 'bottom',
       top: 'right',
       back: 'back'
     },
-    dPrime: {
+    Dprime: {
       right: 'front',
       back: 'right',
       left: 'back',
       front: 'left',
       bottom: 'bottom'
-    }
+    },
+    Mprime: {
+      top: 'back',
+      bottom: 'front',
+      front: 'top',
+      back: 'bottom',
+    },
+    Eprime: {
+      front: 'left',
+      left: 'back',
+      back: 'right',
+      right: 'front',
+    },
+    Sprime: {
+      right: 'top',
+      left: 'bottom',
+      bottom: 'right',
+      top: 'left',
+    },
   }
 
   for (let key in piece) {
