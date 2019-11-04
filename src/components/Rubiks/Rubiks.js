@@ -10,7 +10,13 @@ class Rubiks extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {rotateX: 0, rotateY: 0, rotate: undefined, levels: 'horizontal'};
+    this.state = {
+      rotateX: 0, 
+      rotateY: 0, 
+      rotate: undefined, 
+      levels: 'horizontal',
+      offsets: [0,0],
+    };
   }
 
   componentDidMount = () => {
@@ -142,7 +148,7 @@ class Rubiks extends React.Component {
     return true;
   }
 
-  onMouseDown = () => {
+  onMouseDown = (e) => {
     this.setState({mouseDown: true});
   }
   onMouseUp = () => {
@@ -150,9 +156,27 @@ class Rubiks extends React.Component {
   }
 
   onMouseMove = (e) => {
+    this.setState({testing2: this.state.testing2 + 1});
     if(this.state.mouseDown) {
       this.visuallyRotate(e.movementX, e.movementY)
     }
+  }
+  onTouchMove = (e) => {
+    let offsetX = e.touches[0].clientX;
+    let offsetY = e.touches[0].clientY;
+
+    let y = offsetY - (this.state.offsets[1] || 0);
+    let x = offsetX - (this.state.offsets[0] || 0);
+
+    this.visuallyRotate(x, y)
+
+    this.setState({offsets: [offsetX, offsetY]});
+  }
+  onTouchStart = (e) => {
+    this.setState({offsets: [e.touches[0].clientX, e.touches[0].clientY]});
+  }
+  onTouchEnd = () => {
+    this.setState({offsets: [0,0]});
   }
 
   getClasses = (i, j, k) => {
@@ -208,7 +232,7 @@ class Rubiks extends React.Component {
 
     if (cube) {
       return (
-        <div className='settings' onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp}>
+        <div className='settings' onMouseMove={this.onMouseMove} onTouchMove={this.onTouchMove} onTouchStart={this.onTouchStart} onTouchEnd={this.onTouchEnd} onMouseUp={this.onMouseUp}>
           <div className={`cube ${mouseDown ? 'dragging' : ''}`} onMouseDown={this.onMouseDown} style={{transform: `translateZ(-80px) rotateY(${rotateY}deg) rotateX(${rotateX}deg`}}>
             {cube.map((y, i) => {
               if (levels === 'horizontal') {

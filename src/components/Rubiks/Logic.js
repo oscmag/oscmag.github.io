@@ -11,20 +11,21 @@ export const rotate = function (notation, cube, sides) {
   const side = notationsMap[notation];
 
   const rotationArgs = {
-    right: ['x', 2, 'z', 'y', 'inc', 'decr'],
-    top: ['y', 0, 'x', 'z', 'decr', 'decr'],
-    bottom: ['y', 2, 'x', 'z', 'inc', 'decr'],
-    front: ['z', 0, 'x', 'y', 'inc', 'decr'],
-    back: ['z', 2, 'x', 'y', 'inc', 'inc'],
-    left: ['x', 0, 'z', 'y', 'inc', 'inc']
+    r: ['x', 2, 'z', 'y', 'inc', 'decr'],
+    u: ['y', 0, 'x', 'z', 'decr', 'decr'],
+    d: ['y', 2, 'x', 'z', 'inc', 'decr'],
+    f: ['z', 0, 'x', 'y', 'inc', 'decr'],
+    b: ['z', 2, 'x', 'y', 'inc', 'inc'],
+    l: ['x', 0, 'z', 'y', 'inc', 'inc']
   }
+
   const options = {
-    staticAxis: rotationArgs[side][0], 
-    staticValue: rotationArgs[side][1], 
-    threeStepAxis: rotationArgs[side][2], 
-    oneStepAxis: rotationArgs[side][3], 
-    oneStepDirection: rotationArgs[side][4], 
-    threeStepDirection: rotationArgs[side][5]
+    staticAxis: rotationArgs[notation][0], 
+    staticValue: rotationArgs[notation][1], 
+    threeStepAxis: rotationArgs[notation][2], 
+    oneStepAxis: rotationArgs[notation][3], 
+    oneStepDirection: rotationArgs[notation][4], 
+    threeStepDirection: rotationArgs[notation][5]
   };
 
   const rotMap = getRotationMap(options);
@@ -40,6 +41,7 @@ export const rotate = function (notation, cube, sides) {
 const rotatePiece = (piece, notation) => {
   let rotatedPiece = JSON.parse(JSON.stringify(piece));
   let rotationMap = {
+    //clockwise
     f: {
       top: 'right',
       bottom: 'left',
@@ -80,6 +82,50 @@ const rotatePiece = (piece, notation) => {
       right: 'back',
       back: 'left',
       left: 'front',
+      bottom: 'bottom'
+    },
+
+    //Counter clockwise
+    fPrime: {
+      right: 'top',
+      left: 'bottom',
+      bottom: 'right',
+      top: 'left',
+      front: 'front'
+    },
+    rPrime: {
+      back: 'top',
+      front: 'bottom',
+      top: 'front',
+      bottom: 'back',
+      right: 'right',
+    },
+    uPrime: {
+      left: 'front',
+      back: 'left',
+      right: 'back',
+      front: 'right',
+      top: 'top'
+    },
+    lPrime: {
+      bottom: 'front',
+      back: 'bottom',
+      top: 'back',
+      front: 'top',
+      left: 'left'
+    },
+    bPrime: {
+      left: 'top',
+      bottom: 'left',
+      right: 'bottom',
+      top: 'right',
+      back: 'back'
+    },
+    dPrime: {
+      right: 'front',
+      back: 'right',
+      left: 'back',
+      front: 'left',
       bottom: 'bottom'
     }
   }
