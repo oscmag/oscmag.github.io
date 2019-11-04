@@ -78,6 +78,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 80px;
+  width: 200px;
 }
 
 .rubik-nav > div {
@@ -88,12 +89,16 @@
 .r-button {
   background-color: white;
   padding: 8px;
-  margin: 5px;
+  margin: 2px;
   min-width: 15px;
   cursor: pointer;
   border: rgb(83, 66, 66) solid 1px;
   border-radius: 5px;
   user-select: none;
+}
+
+.main-buttons {
+  margin-top: 7px;
 }
 
 .cube-face {
