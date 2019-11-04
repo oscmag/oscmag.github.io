@@ -1,5 +1,5 @@
 {
-  "main.css": "/static/css/main.06c40f0a.chunk.css",
+  "main.css": "/static/css/main.9e96ad7a.chunk.css",
   "main.js": "/static/js/main.8bf4a804.chunk.js",
   "main.js.map": "/static/js/main.8bf4a804.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
@@ -7,9 +7,9 @@
   "static/js/2.a642bd98.chunk.js": "/static/js/2.a642bd98.chunk.js",
   "static/js/2.a642bd98.chunk.js.map": "/static/js/2.a642bd98.chunk.js.map",
   "index.html": "/index.html",
-  "precache-manifest.ec6b1dfe0f8f70a3034b710efc7ceb69.js": "/precache-manifest.ec6b1dfe0f8f70a3034b710efc7ceb69.js",
+  "precache-manifest.6119b3b6f31dd79e3e6707ebe8aef9a9.js": "/precache-manifest.6119b3b6f31dd79e3e6707ebe8aef9a9.js",
   "service-worker.js": "/service-worker.js",
-  "static/css/main.06c40f0a.chunk.css.map": "/static/css/main.06c40f0a.chunk.css.map",
+  "static/css/main.9e96ad7a.chunk.css.map": "/static/css/main.9e96ad7a.chunk.css.map",
   "static/media/menu-icon.svg": "/static/media/menu-icon.d87f95fd.svg",
   "static/media/rubiks_cube_logo.png": "/static/media/rubiks_cube_logo.3e51c3ba.png"
 }
