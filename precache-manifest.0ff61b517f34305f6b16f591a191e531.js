@@ -1,10 +1,10 @@
 self.__precacheManifest = [
   {
-    "revision": "66c7709acf05d31ff9b6",
-    "url": "/static/css/main.9e96ad7a.chunk.css"
+    "revision": "be0412cfbdb275bba0df",
+    "url": "/static/css/main.c5f9c862.chunk.css"
   },
   {
-    "revision": "66c7709acf05d31ff9b6",
+    "revision": "be0412cfbdb275bba0df",
     "url": "/static/js/main.8bf4a804.chunk.js"
   },
   {
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/static/media/rubiks_cube_logo.3e51c3ba.png"
   },
   {
-    "revision": "8bcc117c78944f3805279f7d079504ba",
+    "revision": "0857c80f98400fcb38951fce81cb553e",
     "url": "/index.html"
   }
 ];
