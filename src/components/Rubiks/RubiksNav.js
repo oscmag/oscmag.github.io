@@ -26,6 +26,12 @@ function RubiksNav(props) {
         <div className='r-button' onClick={() => rotate('Eprime')}>E'</div>
         <div className='r-button' onClick={() => rotate('Sprime')}>S'</div>
       </div>
+      <div>
+        <div className='r-button' onClick={() => rotate('r')}>r</div>
+        <div className='r-button' onClick={() => rotate('f')}>f</div>
+        <div className='r-button' onClick={() => rotate('l')}>l</div>
+
+      </div>
       <div className='main-buttons'>
         <div className='r-button' onClick={shuffle}>Shuffle</div>
         <div className='r-button' onClick={solve}>Solve</div>

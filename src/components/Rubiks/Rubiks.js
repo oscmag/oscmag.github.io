@@ -95,7 +95,9 @@ class Rubiks extends React.Component {
     const alts = [
       'D', 'F', 'B', 'L', 'R', 'U', 
       'Dprime', 'Fprime', 'Bprime', 'Lprime', 'Rprime', 'Uprime', 
-      'M', 'E', 'S', 'Mprime', 'Eprime', 'Sprime'
+      'M', 'E', 'S', 'Mprime', 'Eprime', 'Sprime',
+      'd', 'f', 'b', 'l', 'r', 'u',
+      'dprime', 'fprime', 'bprime', 'lprime', 'rprime', 'uprime', 
     ];
     const operations = [];
 
@@ -147,9 +149,9 @@ class Rubiks extends React.Component {
 
   rotate = async (notation, shuffling) => {
     let levels;
-    if (['R','L', 'Rprime','Lprime', 'M', 'Mprime'].includes(notation)) {
+    if (['R','L', 'Rprime','Lprime', 'M', 'Mprime', 'r', 'l', 'rprime', 'lprime'].includes(notation)) {
       levels = 'vertical';
-    } else if (['F','B', 'Fprime','Bprime', 'S', 'Sprime'].includes(notation)) {
+    } else if (['F','B', 'Fprime','Bprime', 'S', 'Sprime', 'f', 'b', 'fprime', 'bprime'].includes(notation)) {
       levels = 'depth';
     } else {
       levels = 'horizontal';
@@ -159,12 +161,11 @@ class Rubiks extends React.Component {
     await this.sleep(100);
     this.setState({rotate: notation})
     
-    setTimeout(() => {
-      const {cube, sides} = this.state;
-      const updatedCube = rotate(notation, cube, sides);
-      this.setSides(updatedCube);
-      this.setState({cube: updatedCube, rotate: undefined});
-    }, timer)
+    await this.sleep(timer)
+    const {cube, sides} = this.state;
+    const updatedCube = rotate(notation, cube, sides);
+    this.setSides(updatedCube);
+    this.setState({cube: updatedCube, rotate: undefined});
   }
   
   solve = () => {
@@ -173,9 +174,9 @@ class Rubiks extends React.Component {
     let solveMoves = solver(cubeString);
     solveMoves = solveMoves.split(' ');
     let timer = 0;
-    solveMoves.forEach(async (operation, i) => {
+    solveMoves.forEach(async(operation, i) => {
       if (i > 0) {
-        timer += 200;
+        timer += 1000;
         await this.sleep(timer);
       }
       this.rotate(operation, true);
@@ -315,7 +316,7 @@ class Rubiks extends React.Component {
             {cube.map((y, i) => {
               if (levels === 'horizontal') {
                 if (i === 0) {
-                  return <div className={`first-level ${rotate === 'U' ? 'rotateU' : rotate === 'Uprime' ? 'rotateUPrime' : ''}`} key={i}>
+                  return <div className={`first-level ${(rotate === 'U' || rotate === 'u') ? 'rotateU' : (rotate === 'Uprime' || rotate === 'uprime') ? 'rotateUPrime' : ''}`} key={i}>
                   {y.map((x, j) => {
                     return x.map((z, k) => {
                       let classes = this.getClasses(i, j, k);
@@ -330,7 +331,7 @@ class Rubiks extends React.Component {
                   })}
                   </div>
                 } else if (i === 1) {
-                  return <div className={`second-level ${rotate === 'E' ? 'rotateE' : rotate === 'Eprime' ? 'rotateEPrime' : ''}`} key={i}>
+                  return <div className={`second-level ${(rotate === 'E' || rotate === 'uprime' || rotate === 'd') ? 'rotateE' : (rotate === 'Eprime' || rotate === 'dprime' || rotate === 'u') ? 'rotateEPrime' : ''}`} key={i}>
                   {y.map((x, j) => {
                     return x.map((z, k) => {
                       let classes = this.getClasses(i, j, k);
@@ -345,7 +346,7 @@ class Rubiks extends React.Component {
                   })}
                   </div>
                 } else if (i === 2) {
-                  return <div className={`third-level ${rotate === 'D' ? 'rotateD' : rotate === 'Dprime' ? 'rotateDPrime' : ''}`} key={i}>
+                  return <div className={`third-level ${(rotate === 'D' || rotate === 'd') ? 'rotateD' : (rotate === 'Dprime' || rotate === 'dprime') ? 'rotateDPrime' : ''}`} key={i}>
                   {y.map((x, j) => {
                     return x.map((z, k) => {
                       let classes = this.getClasses(i, j, k);
@@ -363,7 +364,7 @@ class Rubiks extends React.Component {
               } else if (levels === 'vertical') {
                 return (
                   <>
-                    <div className={`first-level ${rotate === 'L' ? 'rotateL' : rotate === 'Lprime' ? 'rotateLPrime' : ''}`} key='1'>
+                    <div className={`first-level ${(rotate === 'L' || rotate === 'l') ? 'rotateL' : (rotate === 'Lprime' || rotate === 'lprime') ? 'rotateLPrime' : ''}`} key='1'>
                       {y.map((x, j) => {
                         if (j === 0) {
                           return x.map((z, k) => {
@@ -379,7 +380,7 @@ class Rubiks extends React.Component {
                         } else return null;
                       })}
                     </div>
-                    <div className={`second-level ${rotate === 'M' ? 'rotateM' : rotate === 'Mprime' ? 'rotateMPrime' : ''}`} key='2'>
+                    <div className={`second-level ${(rotate === 'M' || rotate === 'l' || rotate === 'rprime') ? 'rotateM' : (rotate === 'Mprime' || rotate === 'r' || rotate === 'lprime') ? 'rotateMPrime' : ''}`} key='2'>
                       {y.map((x, j) => {
                         if (j === 1) {
                           return x.map((z, k) => {
@@ -395,7 +396,7 @@ class Rubiks extends React.Component {
                         } else return null;
                       })}
                   </div>
-                  <div className={`third-level ${rotate === 'R' ? 'rotateR' : rotate === 'Rprime' ? 'rotateRPrime' : ''}`} key='3'>
+                  <div className={`third-level ${(rotate === 'R' || rotate === 'r') ? 'rotateR' : (rotate === 'Rprime' || rotate === 'rprime') ? 'rotateRPrime' : ''}`} key='3'>
                       {y.map((x, j) => {
                         if (j === 2) {
                           return x.map((z, k) => {
@@ -416,7 +417,7 @@ class Rubiks extends React.Component {
               } else if (levels === 'depth') {
                 return (
                   <>
-                    <div className={`first-level ${rotate === 'F' ? 'rotateF' : rotate === 'Fprime' ? 'rotateFPrime' : ''}`} key='1'>
+                    <div className={`first-level ${(rotate === 'F' || rotate === 'f') ? 'rotateF' : (rotate === 'Fprime' || rotate === 'fprime') ? 'rotateFPrime' : ''}`} key='1'>
                         {y.map((x, j) => {
                           return x.map((z, k) => {
                             if (k === 0) {
@@ -432,7 +433,7 @@ class Rubiks extends React.Component {
                           })}
                         )}
                       </div>
-                      <div className={`second-level ${rotate === 'S' ? 'rotateS' : rotate === 'Sprime' ? 'rotateSPrime' : ''}`} key='2'>
+                      <div className={`second-level ${(rotate === 'S' || rotate === 'f' || rotate === 'bprime') ? 'rotateS' : (rotate === 'Sprime' || rotate === 'b' || rotate === 'fprime') ? 'rotateSPrime' : ''}`} key='2'>
                         {y.map((x, j) => {
                           return x.map((z, k) => {
                             if (k === 1) {
@@ -448,7 +449,7 @@ class Rubiks extends React.Component {
                           })
                         })}
                     </div>
-                    <div className={`third-level ${rotate === 'B' ? 'rotateB' : rotate === 'Bprime' ? 'rotateBPrime' : ''}`} key='3'>
+                    <div className={`third-level ${(rotate === 'B' || rotate === 'b') ? 'rotateB' : (rotate === 'Bprime' || rotate === 'bprime') ? 'rotateBPrime' : ''}`} key='3'>
                         {y.map((x, j) => {
                           return x.map((z, k) => {
                             if (k === 2) {
