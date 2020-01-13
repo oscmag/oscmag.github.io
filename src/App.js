@@ -8,6 +8,8 @@ import Towers from './components/Towers/Towers';
 // import Workouts from './components/Workouts.js'
 // import Statistics from './components/Statistics.js'
 // import About from './components/About.js'
+import Chess from './components/Chess/Chess';
+
 import './App.css';
 import history from './history';
 
@@ -23,6 +25,7 @@ class App extends Component {
               <Route exact path="/Sudoku" component={Sudoku}/>
               <Route exact path="/Rubiks" component={Rubiks}/>
               <Route exact path="/Towers" component={Towers}/>
+              <Route exact path="/Chess" component={Chess}/>
               {/* <Route exact path="/workouts" component={Workouts} />
               <Route exact path="/statistics" component={Statistics} />
               <Route exact path="/about" component={About} /> */}

@@ -39,6 +39,7 @@ class Navbar extends Component {
               <Link to="/sudoku" onClick={this.toggleMenu}>Sudoku</Link>
               <Link to="/rubiks" onClick={this.toggleMenu}>Rubik's Cube</Link>
               <Link to="/towers" onClick={this.toggleMenu}>Towers</Link>
+              <Link to="/chess" onClick={this.toggleMenu}>Chess</Link>
               {/* <Link to="/workouts" onClick={this.toggleMenu}>WORKOUTS</Link>
               <Link to="/statistics" onClick={this.toggleMenu}>STATISTICS</Link>
               <Link to="/about" onClick={this.toggleMenu}>ABOUT</Link> */}
